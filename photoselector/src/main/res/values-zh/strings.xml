@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="has_choose">已选择</string>
+  <string name="picture_unit">张</string>
+  <string name="please_choose_pic">选择图片</string>
+  <string name="picture_limit">已达到最大选择数</string>
+  <string name="limit_format" formatted="false">已经选择 %d 张图片(最大选择为 %d)</string>
+
+</resources>
