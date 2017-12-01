@@ -48,7 +48,7 @@ class FragmentPermissionHelperImplV23 extends BasePermissionHelper<Fragment>{
   @Override
   void requestPermissions(String[] permissions,int requestCode,boolean showRational){
     super.requestPermissions(permissions,requestCode,showRational);
-    if(canAccessRequestPermission(getHost().getContext(),permissions)){
+    if(canAccessRequestPermission(getHost().getActivity(),permissions)){
       getHost().requestPermissions(permissions,requestCode);
     }else{
       if(showRational){

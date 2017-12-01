@@ -47,6 +47,7 @@ class ActivityPermissionHelperImplV23 extends BasePermissionHelper<AppCompatActi
   void requestPermissions(String[] permissions,int requestCode,boolean showRational){
     super.requestPermissions(permissions,requestCode,showRational);
     if(canAccessRequestPermission(getHost(),permissions)){
+      //not set "Never ask again"
       getHost().requestPermissions(permissions,requestCode);
     }else{
       if(showRational){

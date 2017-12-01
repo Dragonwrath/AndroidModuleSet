@@ -2,7 +2,6 @@ package com.joker.common.utils.easypermissions;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,7 +12,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableStringBuilder;
 
 import com.joker.common.utils.R;
 import com.joker.common.utils.ResourcesUtils;
@@ -69,12 +67,12 @@ abstract class BasePermissionHelper<T>{
     return true;
   }
 
-  static boolean canAccessRequestPermission(Context context,String[] permissions){
-    //not set "never ask again" yet
-    SharedPreferences preferences=context.getSharedPreferences(PERMISSION_SP,Context.MODE_PRIVATE);
+  boolean canAccessRequestPermission(Activity activity,String[] permissions){
+    SharedPreferences preferences=activity.getSharedPreferences(PERMISSION_SP,Context.MODE_PRIVATE);
     boolean result=true;
     for(String permission : permissions) {
-      result&=preferences.getBoolean(permission,true);
+      result&=(activity.shouldShowRequestPermissionRationale(permission)
+          || preferences.getBoolean(permission,true));
     }
     return result;
   }

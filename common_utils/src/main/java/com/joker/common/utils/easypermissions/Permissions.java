@@ -46,8 +46,9 @@ public class Permissions{
 
   public final static String[] SYSTEM= {
       Manifest.permission.CAMERA,//0
-      Manifest.permission.READ_CONTACTS,//1
-      Manifest.permission.RECORD_AUDIO, //2
+      Manifest.permission.READ_EXTERNAL_STORAGE,//1
+      Manifest.permission.WRITE_EXTERNAL_STORAGE,//2
+      Manifest.permission.ACCESS_FINE_LOCATION, //3
   };
 
 
@@ -61,7 +62,8 @@ public class Permissions{
     final static String[] RATIONAL_ZH ={
         "相机权限-获取相机权限，来进行拍照", //0
         "存储权限-获取存储权限，来进行读取文件",//1
-        "定位权限-获取定位权限，读取相应位置信息",//2
+        "存储权限-获取存储权限，来进行读取文件",//2
+        "定位权限-获取定位权限，读取相应位置信息",//3
     };
   }
 

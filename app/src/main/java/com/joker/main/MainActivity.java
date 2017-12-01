@@ -3,14 +3,17 @@ package com.joker.main;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
+import android.database.Cursor;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -52,6 +55,21 @@ public class MainActivity extends AppCompatActivity implements Permissions.Callb
   }
 
   public void pick(View view){
+    ArrayList<String> imageList = new ArrayList<String>();
+
+    Cursor imageCursor =  getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID}, null, null, MediaStore.Images.Media._ID);
+    if(imageCursor != null) {
+      LogUtils.w(TAG, " cursor is null");
+      while (imageCursor.moveToNext()) {
+        imageList.add(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)));
+      }
+      imageCursor.close();
+      for(String s : imageList) {
+        LogUtils.w(TAG, s);
+
+      }
+    }
+
 
   }
 
