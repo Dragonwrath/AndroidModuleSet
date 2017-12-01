@@ -21,12 +21,12 @@
   </style>
 
   <style name="BaseTitle">
-    <item name="android:textSize">@dimen/dialog_title_size</item>
+    <item name="android:textSize">@dimen/big_text_size</item>
     <item name="android:textColor">@color/dialog.Title</item>
   </style>
 
   <style name="BaseText">
-    <item name="android:textSize">@dimen/dialog_content_size</item>
+    <item name="android:textSize">@dimen/normal_text_size</item>
     <item name="android:textColor">@color/dialog.Title</item>
   </style>
 

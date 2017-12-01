@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="title">Title</string>
-  <string name="content">Content</string>
-  <string name="confirm">Confirm</string>
-  <string name="cancel">Cancel</string>
+  <string name="title">标题</string>
+  <string name="content">内容</string>
+  <string name="confirm">确认</string>
+  <string name="cancel">取消</string>
+  <string name="request_permission_title">权限请求</string>
+  <string name="permission_failure">授权失败</string>
+
 </resources>
