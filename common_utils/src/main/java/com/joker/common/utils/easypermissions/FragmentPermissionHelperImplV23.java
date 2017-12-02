@@ -2,6 +2,7 @@ package com.joker.common.utils.easypermissions;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
@@ -29,13 +30,12 @@ class FragmentPermissionHelperImplV23 extends BasePermissionHelper<Fragment>{
 
   @Override
   void openSettingForPermission(int requestCode){
-    super.openSettingForPermission(requestCode);
-    Intent intent = new Intent(Settings.ACTION_APPLICATION_SETTINGS);
+    Intent intent=new Intent(Settings.ACTION_APPLICATION_SETTINGS);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addCategory(Intent.CATEGORY_DEFAULT);
     intent.setData(Uri.fromParts("package",getHost().getContext().getPackageName(),null));
     ComponentName name=intent.resolveActivity(getHost().getContext().getPackageManager());
-    if(name != null) {
+    if(name!=null){
       getHost().startActivityForResult(intent,requestCode);
     }
   }
@@ -46,15 +46,16 @@ class FragmentPermissionHelperImplV23 extends BasePermissionHelper<Fragment>{
   }
 
   @Override
-  void requestPermissions(String[] permissions,int requestCode,boolean showRational){
-    super.requestPermissions(permissions,requestCode,showRational);
+  void requestPermissions(String[] permissions,int requestCode,boolean showRational,
+                          DialogInterface.OnClickListener posListener,
+                          DialogInterface.OnClickListener negListener){
     if(canAccessRequestPermission(getHost().getActivity(),permissions)){
       getHost().requestPermissions(permissions,requestCode);
     }else{
       if(showRational){
-        AlertDialogFragment dialog=showRationalDialog(getHost().getContext(),permissions,requestCode);
+        AlertDialogFragment dialog=showRationalDialog(getHost().getContext(),permissions,posListener,negListener);
         dialog.show(getHost().getChildFragmentManager(),"permission");
-      }else {
+      }else{
         failureMessage();
       }
     }

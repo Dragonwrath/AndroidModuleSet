@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.joker.common.utils.R;
 import com.joker.common.utils.ResourcesUtils;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 
@@ -26,8 +27,8 @@ public class AlertDialogFragment extends DialogFragment implements View.OnClickL
   private TextView content;
   private Button positive;
   private Button negative;
-  private Stack<Dialog.OnClickListener> posListeners;
-  private Stack<Dialog.OnClickListener> negListeners;
+  private ArrayList<Dialog.OnClickListener> posListeners;
+  private ArrayList<Dialog.OnClickListener> negListeners;
 
   public AlertDialogFragment(){
     // Required empty public constructor
@@ -43,7 +44,7 @@ public class AlertDialogFragment extends DialogFragment implements View.OnClickL
   @Override
   public View onCreateView(LayoutInflater inflater,ViewGroup container,
                            Bundle savedInstanceState){
-    View view=inflater.inflate(R.layout.dialog_alert,container,false);
+    View view=inflater.inflate(R.layout.dialog_alert,null,false);
     positive=(Button)view.findViewById(R.id.btn_dialog_pos);
     negative=(Button)view.findViewById(R.id.btn_dialog_neg);
     title=(TextView)view.findViewById(R.id.tv_dialog_title);
@@ -54,15 +55,14 @@ public class AlertDialogFragment extends DialogFragment implements View.OnClickL
   @Override
   public void onViewCreated(View view,@Nullable Bundle savedInstanceState){
     super.onViewCreated(view,savedInstanceState);
-    posListeners=new Stack<>();
-    posListeners.push(new DialogInterface.OnClickListener(){
+    checkListenersNotNull();
+    posListeners.add(new DialogInterface.OnClickListener(){
       @Override
       public void onClick(DialogInterface dialog,int which){
         dialog.dismiss();
       }
     });
-    negListeners=new Stack<>();
-    negListeners.push(new DialogInterface.OnClickListener(){
+    negListeners.add(new DialogInterface.OnClickListener(){
       @Override
       public void onClick(DialogInterface dialog,int which){
         dialog.dismiss();
@@ -106,14 +106,25 @@ public class AlertDialogFragment extends DialogFragment implements View.OnClickL
 
   public void addPositiveClickListener(Dialog.OnClickListener listener){
     if(listener!=null){
-      posListeners.push(listener);
+      checkListenersNotNull();
+      posListeners.add(0,listener);
+    }
+  }
+
+  private void checkListenersNotNull(){
+    if(posListeners == null){
+      posListeners = new ArrayList<>();
+    }
+    if(negListeners == null){
+      negListeners = new ArrayList<>();
     }
   }
 
   public void addOnNegativeClickListener(Dialog.OnClickListener listener){
-    if(listener!=null&&posListeners!=null){
+    if(listener!=null){
+      checkListenersNotNull();
       makeNegativeButtonVisible();
-      negListeners.push(listener);
+      negListeners.add(0,listener);
     }
   }
 
@@ -138,4 +149,5 @@ public class AlertDialogFragment extends DialogFragment implements View.OnClickL
       }
     }
   }
+
 }

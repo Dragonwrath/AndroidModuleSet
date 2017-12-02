@@ -1,6 +1,7 @@
 package com.joker.common.utils.easypermissions;
 
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
@@ -27,13 +28,12 @@ class ActivityPermissionHelperImplV23 extends BasePermissionHelper<AppCompatActi
 
   @Override
   void openSettingForPermission(int requestCode){
-    super.openSettingForPermission(requestCode);
-    Intent intent = new Intent(Settings.ACTION_APPLICATION_SETTINGS);
+    Intent intent=new Intent(Settings.ACTION_APPLICATION_SETTINGS);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addCategory(Intent.CATEGORY_DEFAULT);
     intent.setData(Uri.fromParts("package",getHost().getPackageName(),null));
     ComponentName name=intent.resolveActivity(getHost().getPackageManager());
-    if(name != null) {
+    if(name!=null){
       getHost().startActivityForResult(intent,requestCode);
     }
   }
@@ -44,20 +44,20 @@ class ActivityPermissionHelperImplV23 extends BasePermissionHelper<AppCompatActi
   }
 
   @Override
-  void requestPermissions(String[] permissions,int requestCode,boolean showRational){
-    super.requestPermissions(permissions,requestCode,showRational);
+  void requestPermissions(String[] permissions,int requestCode,boolean showRational,
+                          DialogInterface.OnClickListener posListener,
+                          DialogInterface.OnClickListener negListener){
     if(canAccessRequestPermission(getHost(),permissions)){
       //not set "Never ask again"
       getHost().requestPermissions(permissions,requestCode);
     }else{
       if(showRational){
-        AlertDialogFragment dialog=showRationalDialog(getHost(),permissions,requestCode);
+        AlertDialogFragment dialog=showRationalDialog(getHost(),permissions,posListener,negListener);
         dialog.show(getHost().getSupportFragmentManager(),"permission");
-      } else {
+      }else{
         failureMessage();
       }
     }
   }
-
 
 }

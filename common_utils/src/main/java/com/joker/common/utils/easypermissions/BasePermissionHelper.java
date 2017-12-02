@@ -2,11 +2,11 @@ package com.joker.common.utils.easypermissions;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -18,10 +18,7 @@ import com.joker.common.utils.ResourcesUtils;
 import com.joker.common.utils.dialog.AlertDialogFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @RequiresApi(23)
 abstract class BasePermissionHelper<T>{
@@ -29,11 +26,9 @@ abstract class BasePermissionHelper<T>{
 
   private final T host;
 
-  private final AtomicInteger requestNum;
 
   BasePermissionHelper(T host){
     this.host=host;
-    this.requestNum = new AtomicInteger();
   }
 
   T getHost(){
@@ -45,15 +40,19 @@ abstract class BasePermissionHelper<T>{
 
   abstract boolean hasPermission(@NonNull String[] permissions);
 
-  @CallSuper
-  void openSettingForPermission(int requestCode){
-    requestNum.set(requestCode);
+  abstract void openSettingForPermission(int requestCode);
+
+  void onActivityResult(int requestCode,int resultCode,Intent data){
+    //todo should be implement
   }
 
-  @CallSuper
   void requestPermissions(String[] permissions,int requestCode,boolean showRational){
-    requestNum.set(requestCode);
+    this.requestPermissions(permissions,requestCode,showRational,null,null);
   }
+
+  abstract void requestPermissions(String[] permissions,int requestCode,boolean showRational,
+                                   DialogInterface.OnClickListener posListener,
+                                   DialogInterface.OnClickListener negListener);
 
   boolean hasPermission(@NonNull Context context,@NonNull String[] permissions){
     if(context==null){
@@ -72,68 +71,44 @@ abstract class BasePermissionHelper<T>{
     boolean result=true;
     for(String permission : permissions) {
       result&=(activity.shouldShowRequestPermissionRationale(permission)
-          || preferences.getBoolean(permission,true));
+          ||preferences.getBoolean(permission,true));
     }
     return result;
   }
 
-  AlertDialogFragment showRationalDialog(Context context,final String[] permissions,final int requestCode){
-    List<String> list=Arrays.asList(Permissions.SYSTEM);
-    Locale locale=Locale.getDefault();
+  AlertDialogFragment showRationalDialog(Context context,final String[] permissions,
+                                         DialogInterface.OnClickListener posListener,
+                                         DialogInterface.OnClickListener negListener){
+    DangerousPermissionRational principles=new DangerousPermissionRational(context,permissions);
+    String[] strings=principles.translate();
     StringBuilder builder=new StringBuilder();
-    String[] strings;
-    String head;
-    if(locale.equals(Locale.CHINA)){
-      strings = Permissions.Rational.RATIONAL_ZH;
-      head = Permissions.Rational.HEAD_ZH;
-    } else {
-      strings = Permissions.Rational.RATIONAL_ZH;
-      head = Permissions.Rational.HEAD_ZH;
-    }
-    builder.append(head);
-    builder.append("\r\n");
-    for(String permission : permissions) {
-      if(context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED){
-        int i=list.indexOf(permission);
-        builder.append("  ");
-        builder.append(strings[i]);
-        builder.append("\r\n");
-      }
+    for(String principle : strings) {
+      builder.append("  ");
+      builder.append(principle);
+      builder.append("\r\n");
     }
     String content=builder.toString();
     Bundle bundle=new Bundle();
     bundle.putString("title",ResourcesUtils.getString(context,R.string.request_permission_title));
     bundle.putString("content",content);
-    final AlertDialogFragment fragment=AlertDialogFragment.newInstance(bundle);
-//    fragment.addPositiveClickListener(new DialogInterface.OnClickListener(){
-//      @Override
-//      public void onClick(DialogInterface dialog,int which){
-//        Fragment parent=fragment.getParentFragment();
-//        if(parent!=null){
-//          parent.requestPermissions(permissions,requestCode);
-//        }else{
-//          fragment.getActivity().requestPermissions(permissions,requestCode);
-//        }
-//      }
-//    });
-
+    AlertDialogFragment fragment=AlertDialogFragment.newInstance(bundle);
+    fragment.addPositiveClickListener(posListener);
+    fragment.addOnNegativeClickListener(negListener);
     return fragment;
   }
 
 
   void onRequestPermissionsResult(int requestCode,String[] permissions,
                                   int[] grantResults,Object[] receivers){
-    if(requestCode != requestNum.get()) return;
     Activity context=null;
-    //todo should optimize
-    if(host instanceof Fragment) {
-      context = ((Fragment)getHost()).getActivity();
-    } else if(host instanceof AppCompatActivity){
-      context = (AppCompatActivity)getHost();
+    if(host instanceof Fragment){
+      context=((Fragment)getHost()).getActivity();
+    }else if(host instanceof AppCompatActivity){
+      context=(AppCompatActivity)getHost();
     }
-    if(context != null){
+    if(context!=null){
       SharedPreferences.Editor editor=context.getSharedPreferences(PERMISSION_SP,Context.MODE_PRIVATE).edit();
-      try {
+      try{
         List<String> granted=new ArrayList<>();
         List<String> denied=new ArrayList<>();
         for(int i=0;i<permissions.length;i++) {
@@ -142,6 +117,7 @@ abstract class BasePermissionHelper<T>{
             granted.add(perm);
           }else{
             denied.add(perm);
+            //record permission which are set "Never ask again"
             if(!context.shouldShowRequestPermissionRationale(perm)){
               editor.putBoolean(perm,false);
             }
@@ -163,13 +139,9 @@ abstract class BasePermissionHelper<T>{
             }
           }
         }
-      } finally{
+      }finally{
         editor.apply();
       }
     }
-  }
-
-  void onActivityResult(int requestCode,int resultCode,Intent data){
-
   }
 }

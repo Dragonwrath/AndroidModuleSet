@@ -2,6 +2,7 @@ package com.joker.common.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.ArrayRes;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 
@@ -20,6 +21,10 @@ public final class ResourcesUtils{
 
   public static String getString(Context context,@StringRes int id){
     return getResources(context).getString(id);
+  }
+
+  public static String[] getStringArray(Context context,@ArrayRes int id){
+    return getResources(context).getStringArray(id);
   }
 
   public static int getColor(Context context,@ColorRes int color) {

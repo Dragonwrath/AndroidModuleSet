@@ -1,37 +1,21 @@
 package com.joker.main;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PermissionInfo;
 import android.database.Cursor;
-import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.joker.common.utils.LogUtils;
 import com.joker.common.utils.easypermissions.Permissions;
-import com.joker.photoselector.PhotoSelectorActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements Permissions.Callb
   }
 
   public void pick(View view){
-    ArrayList<String> imageList = new ArrayList<String>();
+    ArrayList<String> imageList = new ArrayList<>();
 
     Cursor imageCursor =  getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID}, null, null, MediaStore.Images.Media._ID);
     if(imageCursor != null) {
@@ -77,12 +61,16 @@ public class MainActivity extends AppCompatActivity implements Permissions.Callb
 //    getGrantedPermissions();
 //    getPermission();
     if(Build.VERSION.SDK_INT >=23) {
-      permissions=new Permissions(this);
-      boolean b=permissions.hasPermission(Permissions.SYSTEM);
+      permissions=new Permissions(this, 101);
+      String[] permissions={Manifest.permission.CAMERA,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE,
+          Manifest.permission.ACCESS_FINE_LOCATION
+      };
+      boolean b=this.permissions.hasPermission(permissions);
       if(b) {
         LogUtils.w(TAG,"All permissions have granted");
       } else {
-        permissions.requestPermissions(Permissions.SYSTEM,101, true);
+        this.permissions.requestPermissions(permissions,101, true);
       }
     }
   }

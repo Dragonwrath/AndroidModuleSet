@@ -6,4 +6,18 @@
   <string name="cancel">Cancel</string>
   <string name="request_permission_title">Request Permissions</string>
   <string name="permission_failure">Permission Access failed</string>
+
+  <string name="permission_head">应用需要以下功能，保证正常使用：</string>
+
+  <string-array name="dangerous_permission_rational">
+    <item name="CALENDAR">日历权限-用于和修改您的日历</item>
+    <item name="CAMERA">相机权限-获取相机权限，来进行拍照</item>
+    <item name="CONTACTS">联系人权限-获取联系人权限</item>
+    <item name="LOCATION">定位权限-获取定位权限，读取相应位置信息 </item>
+    <item name="MICROPHONE">录音权限-获取存储权限，来进行读取文件</item>
+    <item name="PHONE">电话权限-用于电话的拨打</item>
+    <item name="SENSORS">感应权限-用于获取相应的系统感应信息</item>
+    <item name="SMS">短信权限-读取与应用相关的短信内容</item>
+    <item name="STORAGE">存储权限-获取存储权限，来进行读取文件</item>
+  </string-array>
 </resources>
