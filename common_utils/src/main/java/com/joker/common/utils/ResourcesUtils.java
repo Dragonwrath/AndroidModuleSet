@@ -11,7 +11,7 @@ public final class ResourcesUtils{
     throw new AssertionError("This class can't be instantiated");
   }
 
-  public static Resources getResources(Context context){
+  static Resources getResources(Context context){
     Resources resources=context.getResources();
     if(resources==null){
       resources=Resources.getSystem();

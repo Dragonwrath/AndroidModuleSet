@@ -9,7 +9,7 @@
 
   <string name="permission_head">应用需要以下功能，保证正常使用：</string>
 
-  <string-array name="dangerous_permission_rational">
+  <string-array name="dangerous_permission_principle">
     <item name="CALENDAR">日历权限-用于和修改您的日历</item>
     <item name="CAMERA">相机权限-获取相机权限，来进行拍照</item>
     <item name="CONTACTS">联系人权限-获取联系人权限</item>

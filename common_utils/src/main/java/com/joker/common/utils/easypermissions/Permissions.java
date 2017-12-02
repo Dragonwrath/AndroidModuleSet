@@ -16,6 +16,7 @@
 
 package com.joker.common.utils.easypermissions;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -31,12 +32,27 @@ import java.util.List;
  * Some method which custom some feature has been modified .
  * This class only support ActivityCompat {@link  android.support.v4.app.ActivityCompat}
  * and Fragment {@link  android.support.v4.app.Fragment}
- * Note: you should use this class on M.
+ * Note: you should use this class on M. The version of SDK which is lower than M, we only
+ * catch exception to hold permission that not be granted
  */
 @RequiresApi(23)
 public class Permissions{
 
   public final static int PERMISSION_REQUEST_CODE=101;
+
+  public final static class Camera{
+    public final static int PERMISSION_REQUEST_CODE = 102;
+    public final static String[] List = {Manifest.permission.CAMERA};
+  }
+
+  public final static class Storage{
+    public final static int PERMISSION_REQUEST_CODE = 103;
+    public final static String[] List = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    @RequiresApi(16)
+    public final static String[] ListV16 = {Manifest.permission.READ_EXTERNAL_STORAGE,
+    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+  }
+
 
   /**
    * Callback interface to receive the results of {@code Permissions.requestPermissions()}

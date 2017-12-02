@@ -79,7 +79,7 @@ abstract class BasePermissionHelper<T>{
   AlertDialogFragment showRationalDialog(Context context,final String[] permissions,
                                          DialogInterface.OnClickListener posListener,
                                          DialogInterface.OnClickListener negListener){
-    DangerousPermissionRational principles=new DangerousPermissionRational(context,permissions);
+    DangerousPermissionPrinciple principles=new DangerousPermissionPrinciple(context,permissions);
     String[] strings=principles.translate();
     StringBuilder builder=new StringBuilder();
     for(String principle : strings) {
