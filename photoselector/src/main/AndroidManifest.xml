@@ -5,7 +5,9 @@
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
   <application>
-    <activity android:name="com.joker.photoselector.PhotoSelectorActivity">
+    <activity android:name="com.joker.photoselector.PhotoSelectorActivity"
+      android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+      >
     </activity>
   </application>
 

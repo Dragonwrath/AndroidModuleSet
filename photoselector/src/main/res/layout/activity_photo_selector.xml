@@ -7,13 +7,12 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true"
-  android:background="@color/gray"
   >
 
-  <FrameLayout
+  <android.support.v7.widget.RecyclerView
     android:id="@+id/container"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
@@ -46,7 +45,4 @@
     android:layout_marginEnd="4dp"
     android:layout_marginBottom="4dp"
     android:src="@drawable/drawable_done" />
-
-
-
 </android.support.constraint.ConstraintLayout>

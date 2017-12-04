@@ -1,10 +1,10 @@
 package com.joker.main;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -18,6 +18,7 @@ import android.widget.ListView;
 
 import com.joker.common.utils.LogUtils;
 import com.joker.common.utils.easypermissions.Permissions;
+import com.joker.photoselector.PhotoSelectorActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,13 +57,21 @@ public class MainActivity extends AppCompatActivity implements Permissions.Callb
         LogUtils.w(TAG, s);
       }
     }
-    list.setVisibility(View.GONE);
     image.setImageURI(Uri.parse(imageList.get(imageList.size()-1)));
 
 
   }
 
   public void request(View view){
+    if(Build.VERSION.SDK_INT >= 23) {
+      permissions=new Permissions(this,Permissions.Storage.PERMISSION_REQUEST_CODE);
+      if(!permissions.hasPermission(Permissions.Storage.ListV16)){
+        permissions.requestPermissions(Permissions.Storage.ListV16,
+            Permissions.Storage.PERMISSION_REQUEST_CODE,false);
+        return;
+      }
+    }
+    startIntent();
 //    getGrantedPermissions();
 //    getPermission();
 //    if(Build.VERSION.SDK_INT >=23) {
@@ -78,15 +87,20 @@ public class MainActivity extends AppCompatActivity implements Permissions.Callb
 //        this.permissions.requestPermissions(permissions,101, true);
 //      }
 //    }
+//
+//    checkPermission(Manifest.permission.CAMERA);
+//    checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+//    checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//    checkPermission(Manifest.permission.RECORD_AUDIO);
+//
+//    customCheckUriPermission(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//    customCheckUriPermission(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+//    customCheckUriPermission(MediaStore.Audio.Media.INTERNAL_CONTENT_URI);
+  }
 
-    checkPermission(Manifest.permission.CAMERA);
-    checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-    checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-    checkPermission(Manifest.permission.RECORD_AUDIO);
-
-    customCheckUriPermission(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-    customCheckUriPermission(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-    customCheckUriPermission(MediaStore.Audio.Media.INTERNAL_CONTENT_URI);
+  private void startIntent(){
+    Intent intent=new Intent(this,PhotoSelectorActivity.class);
+    startActivity(intent);
   }
 
   private void checkPermission(String permission){
@@ -121,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements Permissions.Callb
 
   @Override
   public void onPermissionsGranted(int requestCode,@NonNull List<String> perms){
+    startIntent();
     for(String perm : perms) {
       LogUtils.w(TAG," "+perm +" have granted");
     }

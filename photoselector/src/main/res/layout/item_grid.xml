@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:maxHeight="180dp"
+  android:gravity="center"
+  >
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+      android:id="@+id/iv_photo"
+      android:layout_width="match_parent"
+      android:layout_height="160dp"
+      android:scaleType="center"
+      tools:src="@color/red"
+      />
+    <View
+      android:id="@+id/v_photo_frame"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/translucent"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+  </FrameLayout>
+
+  <ImageView
+    android:id="@+id/iv_photo_tag"
+    android:background="@null"
+    android:padding="6dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentTop="true"
+    android:src="@android:drawable/checkbox_off_background" />
+
+  <TextView
+    android:id="@+id/tv_path"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    tools:text="hahahah"
+    />
+</RelativeLayout>

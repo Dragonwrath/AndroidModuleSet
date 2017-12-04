@@ -5,4 +5,5 @@
   <color name="gray">#dddddd</color>
   <color name="image_selected_color">#7f000000</color>
   <color name="transparent">#00000000</color>
+  <color name="translucent">#8000</color>
 </resources>

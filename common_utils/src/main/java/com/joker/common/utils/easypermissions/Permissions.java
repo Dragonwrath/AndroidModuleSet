@@ -53,6 +53,11 @@ public class Permissions{
     Manifest.permission.WRITE_EXTERNAL_STORAGE};
   }
 
+  public final static class Location{
+    public final static int PERMISSION_REQUEST_CODE = 104;
+    public final static String[] List = {Manifest.permission.ACCESS_FINE_LOCATION,
+    Manifest.permission.ACCESS_COARSE_LOCATION};
+  }
 
   /**
    * Callback interface to receive the results of {@code Permissions.requestPermissions()}
