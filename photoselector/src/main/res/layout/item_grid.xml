@@ -38,11 +38,4 @@
     android:layout_alignParentTop="true"
     android:src="@android:drawable/checkbox_off_background" />
 
-  <TextView
-    android:id="@+id/tv_path"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    tools:text="hahahah"
-    />
 </RelativeLayout>
