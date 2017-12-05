@@ -2,10 +2,7 @@ package com.joker.photoselector;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
 public class PhotoSelectorParams implements Parcelable{

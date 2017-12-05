@@ -14,13 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.GridView;
 
 import com.bumptech.glide.Glide;
+import com.joker.common.utils.LogUtils;
 import com.joker.common.utils.easypermissions.Permissions;
 import com.joker.photoselector.adapter.CustomCursorAdapter;
 import com.joker.photoselector.adapter.PhotoSimpleCursorAdapter;
 import com.joker.photoselector.helper.LoaderManagerHelper;
 
 import java.util.List;
-
 
 /**
  * before this activity start, we should check STORAGE permission
@@ -31,8 +31,8 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
   private Cursor cursor;
   private PhotoSimpleCursorAdapter photoAdapter;
   private CustomCursorAdapter cursorAdapter;
-  private final String[] THUMBNAILS_PROJECTIONS=new String[]{MediaStore.Images.Thumbnails.DATA,MediaStore.Images.Thumbnails._ID};
-  private final String[] IMAGE_PROJECTIONS=new String[]{MediaStore.Images.Media.DATA,MediaStore.Images.Media.DATE_MODIFIED};
+  private final String[] THUMBNAILS_PROJECTIONS=new String[]{MediaStore.Images.Thumbnails.DATA,MediaStore.Images.Thumbnails.IMAGE_ID};
+  private final String[] IMAGE_PROJECTIONS=new String[]{MediaStore.Images.Media.DATA,MediaStore.Images.Media.DATE_MODIFIED,MediaStore.Images.Media.SIZE};
   private String[] projections=IMAGE_PROJECTIONS;
   public LoaderManagerHelper helper;
   public RecyclerView recycler;
@@ -43,7 +43,7 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
     setContentView(R.layout.activity_photo_selector);
     helper=new LoaderManagerHelper(this,getSupportLoaderManager());
     recyclerViewAdapter();
-    helper.initLoader(LoaderManagerHelper.SELECTOR_LOADER_ID,generateBundle(),cursorAdapter);
+    helper.initLoader(LoaderManagerHelper.SELECTOR_LOADER_ID,generateImageBundle(),cursorAdapter);
   }
 
   public void init(){
@@ -58,12 +58,11 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
   private int size=20;
   private int offset=0;
 
-
   public void appendOffset(int offset){
     this.offset+=offset;
   }
 
-  private Bundle generateBundle(){
+  private Bundle generateImageBundle(){
     Bundle bundle=new Bundle();
     bundle.putString(LoaderManagerHelper.URI,MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
     bundle.putStringArray(LoaderManagerHelper.PROJECTIONS,IMAGE_PROJECTIONS);
@@ -71,37 +70,81 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
     return bundle;
   }
 
+  private Bundle generateThumbnailsBundle() {
+    Bundle bundle=new Bundle();
+    bundle.putString(LoaderManagerHelper.URI,MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI.toString());
+    bundle.putStringArray(LoaderManagerHelper.PROJECTIONS,THUMBNAILS_PROJECTIONS);
+    bundle.putString(LoaderManagerHelper.SORT_ORDER,THUMBNAILS_PROJECTIONS[1]+" DESC "+"Limit "+size+" Offset "+offset);
+    return bundle;
+  }
+
   private void recyclerViewAdapter(){
     recycler=(RecyclerView)findViewById(R.id.container);
     GridLayoutManager manager=new GridLayoutManager(this,3);
     recycler.setLayoutManager(manager);
-    cursorAdapter=new CustomCursorAdapter(this);
+    cursorAdapter=new CustomCursorAdapter(this, 8);
     cursorAdapter.setProjections(projections);
     recycler.setAdapter(cursorAdapter);
+    recycler.setOnFlingListener(new RecyclerView.OnFlingListener(){
+      @Override
+      public boolean onFling(int velocityX,int velocityY){
+        if(Math.abs(velocityY)>500){
+          if(velocityY>0){
+            appendOffset(size);
+            size=100;
+            helper.loaderMore(LoaderManagerHelper.SELECTOR_LOADER_ID,generateImageBundle());
+          }
+          recycler.smoothScrollBy(0,velocityY);
+          return true;
+        } else {
+          if(velocityY>0){
+            appendOffset(size);
+            size=20;
+            helper.loaderMore(LoaderManagerHelper.SELECTOR_LOADER_ID,generateImageBundle());
+          }
+          return false;
+        }
+      }
+    });
     recycler.addOnScrollListener(new RecyclerView.OnScrollListener(){
       @Override
       public void onScrollStateChanged(RecyclerView recyclerView,int newState){
         super.onScrollStateChanged(recyclerView,newState);
+        String state ="";
+        switch(newState) {
+          case RecyclerView.SCROLL_STATE_DRAGGING:
+            state="SCROLL_STATE_DRAGGING";
+            break;
+          case RecyclerView.SCROLL_STATE_IDLE:
+            state="SCROLL_STATE_IDLE";
+            break;
+          case RecyclerView.SCROLL_STATE_SETTLING:
+            state="SCROLL_STATE_SETTLING";
+            break;
+        }
+        LogUtils.w("onScrollStateChanged", state);
       }
 
       @Override
       public void onScrolled(RecyclerView recyclerView,int dx,int dy){
         super.onScrolled(recyclerView,dx,dy);
-        int offsetY=(int)(recyclerView.computeHorizontalScrollRange()*0.8f);
-        int tail=(recyclerView.computeVerticalScrollRange());
+        if(dy >0){
+          int offsetY=(int)(recyclerView.computeHorizontalScrollRange()*0.8f);
+          int tail=(recyclerView.computeVerticalScrollRange());
 
-        int scrollExtent=recyclerView.computeVerticalScrollExtent();
-        int scrollOffset=recyclerView.computeVerticalScrollOffset();
-        if(scrollExtent >= tail) { //the region is all on screen
-          return;
-        }
-        if(!recyclerView.canScrollVertically(1)){
-          appendOffset(size);
-          helper.loaderMore(LoaderManagerHelper.SELECTOR_LOADER_ID, generateBundle());
+          int scrollExtent=recyclerView.computeVerticalScrollExtent();
+          int scrollOffset=recyclerView.computeVerticalScrollOffset();
+          if(scrollExtent>=tail){ //the region is all on screen
+            return;
+          }
+          if(!recyclerView.canScrollVertically(1)){
+            appendOffset(size);
+            helper.loaderMore(LoaderManagerHelper.SELECTOR_LOADER_ID,generateImageBundle());
+          }
         }
 //        if(dy>=offsetY){
 //          appendOffset(size);
-//          helper.loaderMore(LoaderManagerHelper.SELECTOR_LOADER_ID, generateBundle());
+//          helper.loaderMore(LoaderManagerHelper.SELECTOR_LOADER_ID, generateImageBundle());
 //        }
 //
 //        boolean b=recyclerView.canScrollVertically(1);
@@ -122,7 +165,6 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
     container.setAdapter(photoAdapter);
   }
 
-
   @Override
   protected void onDestroy(){
     super.onDestroy();
@@ -136,7 +178,6 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
                                          @NonNull String[] permissions,@NonNull int[] grantResults){
     permission.onRequestPermissionsResult(requestCode,permissions,grantResults,new Object[]{this});
     super.onRequestPermissionsResult(requestCode,permissions,grantResults);
-
   }
 
   @Override
@@ -148,5 +189,4 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
   public void onPermissionsDenied(int requestCode,@NonNull List<String> perms){
 
   }
-
 }

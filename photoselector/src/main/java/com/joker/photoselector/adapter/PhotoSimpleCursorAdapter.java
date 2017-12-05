@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 
 
 public class PhotoSimpleCursorAdapter extends SimpleCursorAdapter{
-  public final static String TAG = PhotoSimpleCursorAdapter.class.getName();
-
 
   public PhotoSimpleCursorAdapter(Context context,int layout,Cursor c,String[] from,int[] to,int flags){
     super(context,layout,c,from,to,flags);
