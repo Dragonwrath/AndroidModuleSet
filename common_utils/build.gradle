@@ -8,6 +8,7 @@ android {
 		targetSdkVersion rootProject.ext.target
 		versionCode 1
 		versionName "1.0"
+		manifestPlaceholders = [FILE_PROVIDER_AUTHORITY : applicationId +".fileprovider"]
 
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

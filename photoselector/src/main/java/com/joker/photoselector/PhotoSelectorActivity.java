@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.GridView;
 
 import com.bumptech.glide.Glide;
-import com.joker.common.utils.LogUtils;
 import com.joker.common.utils.easypermissions.Permissions;
 import com.joker.photoselector.adapter.CustomCursorAdapter;
 import com.joker.photoselector.adapter.PhotoSimpleCursorAdapter;
@@ -110,30 +109,14 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
       @Override
       public void onScrollStateChanged(RecyclerView recyclerView,int newState){
         super.onScrollStateChanged(recyclerView,newState);
-        String state ="";
-        switch(newState) {
-          case RecyclerView.SCROLL_STATE_DRAGGING:
-            state="SCROLL_STATE_DRAGGING";
-            break;
-          case RecyclerView.SCROLL_STATE_IDLE:
-            state="SCROLL_STATE_IDLE";
-            break;
-          case RecyclerView.SCROLL_STATE_SETTLING:
-            state="SCROLL_STATE_SETTLING";
-            break;
-        }
-        LogUtils.w("onScrollStateChanged", state);
       }
 
       @Override
       public void onScrolled(RecyclerView recyclerView,int dx,int dy){
         super.onScrolled(recyclerView,dx,dy);
         if(dy >0){
-          int offsetY=(int)(recyclerView.computeHorizontalScrollRange()*0.8f);
           int tail=(recyclerView.computeVerticalScrollRange());
-
           int scrollExtent=recyclerView.computeVerticalScrollExtent();
-          int scrollOffset=recyclerView.computeVerticalScrollOffset();
           if(scrollExtent>=tail){ //the region is all on screen
             return;
           }
@@ -142,17 +125,6 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
             helper.loaderMore(LoaderManagerHelper.SELECTOR_LOADER_ID,generateImageBundle());
           }
         }
-//        if(dy>=offsetY){
-//          appendOffset(size);
-//          helper.loaderMore(LoaderManagerHelper.SELECTOR_LOADER_ID, generateImageBundle());
-//        }
-//
-//        boolean b=recyclerView.canScrollVertically(1);
-//        LogUtils.w("onScrolled "," scroll to end is "+(b));
-//        boolean a=recyclerView.canScrollVertically(-1);
-//        LogUtils.w("onScrolled "," scroll to head is "+(a));
-//
-//        LogUtils.w("onScrolled","scrollExtent-->"+scrollExtent+"scrollOffset-->"+scrollOffset+"  ---tail-->"+tail);
       }
     });
   }

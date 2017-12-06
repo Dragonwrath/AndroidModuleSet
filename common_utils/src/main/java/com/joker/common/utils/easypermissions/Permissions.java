@@ -38,15 +38,15 @@ import java.util.List;
 @RequiresApi(23)
 public class Permissions{
 
-  public final static int PERMISSION_REQUEST_CODE=101;
+  public final static int PERMISSION_REQUEST_CODE=0x1;
 
   public final static class Camera{
-    public final static int PERMISSION_REQUEST_CODE = 102;
+    public final static int PERMISSION_REQUEST_CODE = 0x2;
     public final static String[] List = {Manifest.permission.CAMERA};
   }
 
   public final static class Storage{
-    public final static int PERMISSION_REQUEST_CODE = 103;
+    public final static int PERMISSION_REQUEST_CODE = 0x4;
     public final static String[] List = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     @RequiresApi(16)
     public final static String[] ListV16 = {Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -54,7 +54,7 @@ public class Permissions{
   }
 
   public final static class Location{
-    public final static int PERMISSION_REQUEST_CODE = 104;
+    public final static int PERMISSION_REQUEST_CODE = 0x8;
     public final static String[] List = {Manifest.permission.ACCESS_FINE_LOCATION,
     Manifest.permission.ACCESS_COARSE_LOCATION};
   }
@@ -69,16 +69,13 @@ public class Permissions{
   }
 
   private final BasePermissionHelper helper;
-  private final int code;
-
-  public Permissions(AppCompatActivity host,int requestCode){
+  private int code;
+  public Permissions(AppCompatActivity host){
     helper=new ActivityPermissionHelperImplV23(host);
-    code=requestCode;
   }
 
-  public Permissions(Fragment host,int requestCode){
+  public Permissions(Fragment host){
     helper=new FragmentPermissionHelperImplV23(host);
-    code=requestCode;
   }
 
   public boolean hasPermission(String[] permissions){
@@ -87,11 +84,13 @@ public class Permissions{
 
   public void requestPermissions(
       @NonNull String[] permissions,int requestCode,boolean showRational){
-    if(code!=requestCode&&(permissions==null||permissions.length==0)) return;
+    code = requestCode;
+    if(permissions==null||permissions.length==0) return;
     helper.requestPermissions(permissions,requestCode,showRational);
   }
 
   public void onOpenSettingActivityResulst(int requestCode,int resultCode,String[] permissions){
+    code = requestCode;
     if(code!=requestCode) return;
     if(resultCode==AppCompatActivity.RESULT_OK){
       //TODO hold open setting

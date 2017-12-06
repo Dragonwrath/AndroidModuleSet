@@ -26,6 +26,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
   private String[] projections;
   private final ArrayList<ImageBean> selectedImages;
   private int maxLimit;
+  private final ImageBean photoBean;
 
   public CustomCursorAdapter(Context context,int limit){
     this.context=context;
@@ -33,6 +34,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     imageList=new ArrayList<>();
     selectedImages=new ArrayList<>();
     maxLimit=limit;
+    photoBean = new ImageBean();
   }
 
   public void setProjections(String[] projections){
@@ -51,6 +53,15 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
   @Override
   public void onBindViewHolder(final ViewHolder holder,int position){
+    if(position ==0) {
+      holder.photo.setImageResource(R.drawable.default_photo);
+      holder.itemView.setOnClickListener(new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+          
+        }
+      });
+    }
     final ImageBean bean=imageList.get(position);
     Glide.with(context).load(bean.getUri()).into(holder.photo);
     holder.tag.setOnClickListener(new View.OnClickListener(){
@@ -141,7 +152,10 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
       }finally{
         cursor.close();
         if(cache.size()>0){
-          if(reset) imageList.clear();
+          if(reset){
+            imageList.add(photoBean);
+            imageList.clear();
+          }
           imageList.addAll(cache);
           notifyDataSetChanged();
         }
