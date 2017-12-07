@@ -1,42 +1,25 @@
-package com.joker.common.utils.easypermissions;
+package com.joker.permissions;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.support.annotation.RequiresApi;
 
-import com.joker.common.utils.R;
 import com.joker.common.utils.ResourcesUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
 
-@RequiresApi(23)
+
 final class DangerousPermissionPrinciple{
 
-  private final String[] principles;
-  private final List<String> permissions;
-
-  DangerousPermissionPrinciple(Context context,String[] permissions){
-    principles=ResourcesUtils.getStringArray(context,R.array.dangerous_permission_principle);
-    this.permissions=new ArrayList<>();
-    for(String permission : permissions) {
-      if(context.checkSelfPermission(permission)!=PackageManager.PERMISSION_GRANTED){
-        this.permissions.add(permission);
-      }
-    }
+  static String translateHead(Context context,String permission){
+    String[] principles=ResourcesUtils.getStringArray(context,R.array.dangerous_permission_head);
+    return translateInternal(permission,principles);
   }
 
-  public String[] translate(){
-    TreeSet<String> tree=new TreeSet<>();
-    for(String permission : permissions) {
-      tree.add(translateInternal(permission));
-    }
-    return tree.toArray(new String[tree.size()]);
+  static String translateTail(Context context,String permission){
+    String[] principles=ResourcesUtils.getStringArray(context,R.array.dangerous_permission_principle);
+    return translateInternal(permission,principles);
   }
 
-  private String translateInternal(String permission){
+  private static String translateInternal(String permission,String[] principles){
     switch(permission){
       case Manifest.permission.READ_CALENDAR:
       case Manifest.permission.WRITE_CALENDAR:

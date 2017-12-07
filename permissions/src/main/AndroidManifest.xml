@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.joker.permissions">
+
+  <application>
+    <activity android:name=".PermissionsRequestActivity"
+              android:launchMode="singleTop"
+              android:theme="@style/NoAnimationTheme">
+    </activity>
+  </application>
+
+</manifest>

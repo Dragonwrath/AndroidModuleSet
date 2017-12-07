@@ -14,19 +14,16 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.GridView;
 
 import com.bumptech.glide.Glide;
-import com.joker.common.utils.easypermissions.Permissions;
 import com.joker.photoselector.adapter.CustomCursorAdapter;
 import com.joker.photoselector.adapter.PhotoSimpleCursorAdapter;
 import com.joker.photoselector.helper.LoaderManagerHelper;
 
-import java.util.List;
 
 /**
  * before this activity start, we should check STORAGE permission
  */
-public class PhotoSelectorActivity extends AppCompatActivity implements Permissions.Callbacks{
+public class PhotoSelectorActivity extends AppCompatActivity {
 
-  private Permissions permission;
   private Cursor cursor;
   private PhotoSimpleCursorAdapter photoAdapter;
   private CustomCursorAdapter cursorAdapter;
@@ -148,17 +145,7 @@ public class PhotoSelectorActivity extends AppCompatActivity implements Permissi
   @Override
   public void onRequestPermissionsResult(int requestCode,
                                          @NonNull String[] permissions,@NonNull int[] grantResults){
-    permission.onRequestPermissionsResult(requestCode,permissions,grantResults,new Object[]{this});
     super.onRequestPermissionsResult(requestCode,permissions,grantResults);
   }
 
-  @Override
-  public void onPermissionsGranted(int requestCode,@NonNull List<String> perms){
-
-  }
-
-  @Override
-  public void onPermissionsDenied(int requestCode,@NonNull List<String> perms){
-
-  }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="permission_dialog_build" formatted="false">Allow %s access in:\n  Setting->Apps->%s to use\n  %s</string>
+  <string name="permission_dialog_title">权限设置</string>
+  <string name="settings">去设置</string>
+  <string-array name="dangerous_permission_head">
+    <item name="CALENDAR">calendar</item>
+    <item name="CAMERA">camera</item>
+    <item name="CONTACTS">contacts</item>
+    <item name="LOCATION">location</item>
+    <item name="MICROPHONE">microphone</item>
+    <item name="PHONE">phone</item>
+    <item name="SENSORS">sensors</item>
+    <item name="SMS">sms</item>
+    <item name="STORAGE">storage</item>
+  </string-array>
+
+  <string-array name="dangerous_permission_principle">
+    <item name="CALENDAR">用于和修改您的日历</item>
+    <item name="CAMERA">进行拍照</item>
+    <item name="CONTACTS">获取联系人权限</item>
+    <item name="LOCATION">读取相应位置信息 </item>
+    <item name="MICROPHONE">进行读取文件</item>
+    <item name="PHONE">用于电话的拨打</item>
+    <item name="SENSORS">用于获取相应的系统感应信息</item>
+    <item name="SMS">读取与应用相关的短信内容</item>
+    <item name="STORAGE">获取存储权限，来进行读取文件</item>
+  </string-array>
+</resources>

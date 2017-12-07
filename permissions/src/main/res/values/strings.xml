@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="permission_dialog_title">Permissions Request</string>
+  <string name="settings">Settings</string>
+  <string name="permission_dialog_build" formatted="false">Allow %s access in:\n  Setting->Apps->%s to use\n  %s</string>
+  <string-array name="dangerous_permission_head">
+    <item name="CALENDAR">calendar</item>
+    <item name="CAMERA">camera</item>
+    <item name="CONTACTS">contacts</item>
+    <item name="LOCATION">location</item>
+    <item name="MICROPHONE">microphone</item>
+    <item name="PHONE">phone</item>
+    <item name="SENSORS">sensors</item>
+    <item name="SMS">sms</item>
+    <item name="STORAGE">storage</item>
+  </string-array>
+  <string-array name="dangerous_permission_principle">
+    <item name="CALENDAR">CALENDAR</item>
+    <item name="CAMERA">CAMERA</item>
+    <item name="CONTACTS">CONTACTS</item>
+    <item name="LOCATION">LOCATION</item>
+    <item name="MICROPHONE">MICROPHONE</item>
+    <item name="PHONE">PHONE</item>
+    <item name="SENSORS">SENSORS</item>
+    <item name="SMS">SMS</item>
+    <item name="STORAGE">STORAGE</item>
+  </string-array>
+</resources>

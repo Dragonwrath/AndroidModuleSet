@@ -8,7 +8,6 @@ android {
 		targetSdkVersion rootProject.ext.target
 		versionCode 1
 		versionName "1.0"
-		manifestPlaceholders = [FILE_PROVIDER_AUTHORITY: applicationId + ".fileprovider"]
 
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -22,11 +21,9 @@ android {
 }
 
 dependencies {
-	compile fileTree(dir: 'libs', include: ['*.jar'])
-
+	compile fileTree(include: ['*.jar'], dir: 'libs')
 	compile "com.android.support:appcompat-v7:${rootProject.ext.supportVersion}";
 	compile "com.android.support:support-v4:${rootProject.ext.supportVersion}";
-	compile "com.android.support:recyclerview-v7:${rootProject.ext.supportVersion}";
-	compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraint";
+	compile project(':common_utils')
 	compile 'com.android.support:support-v4:25.3.1'
 }

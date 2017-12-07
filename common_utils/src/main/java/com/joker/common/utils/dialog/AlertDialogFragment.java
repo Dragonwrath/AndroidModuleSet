@@ -18,7 +18,6 @@ import com.joker.common.utils.R;
 import com.joker.common.utils.ResourcesUtils;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 
 public class AlertDialogFragment extends DialogFragment implements View.OnClickListener{
@@ -78,11 +77,11 @@ public class AlertDialogFragment extends DialogFragment implements View.OnClickL
       title=bundle.getString("title",ResourcesUtils.getString(getContext(),R.string.title));
       content=bundle.getString("content",ResourcesUtils.getString(getContext(),R.string.content));
       confirm=bundle.getString("confirm",ResourcesUtils.getString(getContext(),R.string.confirm));
-      cancel=bundle.getString("cancel");
+      cancel=bundle.getString("cancel",ResourcesUtils.getString(getContext(),R.string.cancel));
       this.title.setText(title);
       this.content.setText(content);
       positive.setText(confirm);
-      if(!TextUtils.isEmpty(cancel)){
+      if(!TextUtils.isEmpty(cancel)|| negListeners.size()>0){
         makeNegativeButtonVisible();
         negative.setText(cancel);
       }
@@ -123,7 +122,6 @@ public class AlertDialogFragment extends DialogFragment implements View.OnClickL
   public void addOnNegativeClickListener(Dialog.OnClickListener listener){
     if(listener!=null){
       checkListenersNotNull();
-      makeNegativeButtonVisible();
       negListeners.add(0,listener);
     }
   }
