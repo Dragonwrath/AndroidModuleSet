@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.joker.common.utils.LogUtils;
 import com.joker.permissions.BasePermissionActivity;
+import com.joker.photoselector.PhotoSelectorActivity;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,6 @@ public class MainActivity extends BasePermissionActivity {
 
   public void pick(View view){
     ArrayList<String> imageList=new ArrayList<>();
-
     Cursor imageCursor=getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,new String[]{MediaStore.Images.Media.DATA,MediaStore.Images.Media._ID},null,null,MediaStore.Images.Media._ID);
     if(imageCursor!=null){
       LogUtils.w(TAG," cursor is null");
@@ -55,12 +55,9 @@ public class MainActivity extends BasePermissionActivity {
   }
 
   public void request(View view){
-    needRequestPermission(12345,PERMISSIONS);
-  }
-
-  @Override
-  protected void onActivityResult(int requestCode,int resultCode,Intent data){
-    super.onActivityResult(requestCode,resultCode,data);
+//    needRequestPermission(12345,PERMISSIONS);
+    Intent intent=new Intent(this,PhotoSelectorActivity.class);
+    startActivityForResult(intent, 12342);
   }
 
   @Override

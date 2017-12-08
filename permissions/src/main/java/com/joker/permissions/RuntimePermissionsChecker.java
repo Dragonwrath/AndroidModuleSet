@@ -23,7 +23,7 @@ public class RuntimePermissionsChecker{
       String[] strings=result.toArray(new String[0]);
       if(strings.length>0){
         Intent intent=new Intent(activity,PermissionsRequestActivity.class);
-        intent.putExtra("permission",strings);
+        intent.putExtra("permissions",strings);
         activity.startActivityForResult(intent,requestCode);
         return;
       }
@@ -31,7 +31,7 @@ public class RuntimePermissionsChecker{
     callback.allPermissionGranted();
   }
 
-  public static void hasPermission(Fragment fragment,String[] permissions,int requestCode,PermissionResultCallback callback){
+  public static void hasPermissions(Fragment fragment,String[] permissions,int requestCode,PermissionResultCallback callback){
     if(Build.VERSION.SDK_INT>=23){
       List<String> result=new ArrayList<>();
       for(String permission : permissions) {
@@ -42,14 +42,13 @@ public class RuntimePermissionsChecker{
       String[] strings=result.toArray(new String[0]);
       if(strings.length>0){
         Intent intent=new Intent(fragment.getContext(),PermissionsRequestActivity.class);
-        intent.putExtra("permission",strings);
+        intent.putExtra("permissions",strings);
         fragment.startActivityForResult(intent,requestCode);
         return;
       }
     }
     callback.allPermissionGranted();
   }
-
 
   public static void onActivityResult(Context context,Intent data,String[] permissions,PermissionResultCallback callback){
     if(Build.VERSION.SDK_INT>=23){

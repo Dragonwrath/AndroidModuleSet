@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,11 @@ import com.bumptech.glide.Glide;
 import com.joker.photoselector.R;
 import com.joker.photoselector.bean.ImageBean;
 import com.joker.photoselector.helper.OnLoadFinishedListener;
+import com.joker.photoselector.listener.PhotoCaptureListener;
 
 import java.util.ArrayList;
 
-public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.ViewHolder> implements OnLoadFinishedListener{
+public class SelectorCursorAdapter extends RecyclerView.Adapter<SelectorCursorAdapter.ViewHolder> implements OnLoadFinishedListener{
 
   private Context context;
   private LayoutInflater mLayoutInflater;
@@ -27,8 +27,9 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
   private final ArrayList<ImageBean> selectedImages;
   private int maxLimit;
   private final ImageBean photoBean;
+  private PhotoCaptureListener listener;
 
-  public CustomCursorAdapter(Context context,int limit){
+  public SelectorCursorAdapter(Context context,int limit){
     this.context=context;
     this.mLayoutInflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     imageList=new ArrayList<>();
@@ -58,9 +59,10 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
       holder.itemView.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View v){
-          
+          if(listener != null) listener.checkPhotoCapturePermission();
         }
       });
+      return;
     }
     final ImageBean bean=imageList.get(position);
     Glide.with(context).load(bean.getUri()).into(holder.photo);
@@ -101,35 +103,6 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
   private boolean inRange(){
     return selectedImages.size()<maxLimit;
-  }
-
-  public void notifyCursorChanged(Cursor cursor){
-    long time=System.currentTimeMillis();
-    Log.w(context.getApplicationInfo().getClass().getSimpleName(),"working on "+Thread.currentThread().getName());
-    if(cursor!=null){
-      ArrayList<ImageBean> cache=new ArrayList<>();
-      try{
-        int dataIndex=cursor.getColumnIndex(projections[0]);
-        int idIndex=cursor.getColumnIndex(projections[1]);
-        while(cursor.moveToNext()){
-          ImageBean bean=new ImageBean();
-          String uri=cursor.getString(dataIndex);
-
-          bean.setUri(uri);
-          long id=cursor.getLong(idIndex);
-          bean.setImageId(id);
-          cache.add(bean);
-        }
-      }finally{
-        cursor.close();
-        if(cache.size()>0){
-          imageList.clear();
-          imageList.addAll(cache);
-          notifyDataSetChanged();
-        }
-        Log.w(context.getApplicationInfo().getClass().getSimpleName(),"working cost "+(System.currentTimeMillis()-time));
-      }
-    }
   }
 
   private void loadData(Cursor cursor,boolean reset){
@@ -200,5 +173,9 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
       frame=itemView.findViewById(R.id.v_photo_frame);
       tag=(ImageView)itemView.findViewById(R.id.iv_photo_tag);
     }
+  }
+
+  public void setCaptureListener(PhotoCaptureListener listener){
+    this.listener = listener;
   }
 }

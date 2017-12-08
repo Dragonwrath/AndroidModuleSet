@@ -39,11 +39,12 @@ import java.util.Locale;
  * 3-check all permission，some permission deined to step 0
  */
 @RequiresApi(23)
-public class PermissionsRequestActivity extends AppCompatActivity implements PermissionResultCallback{
+public class PermissionsRequestActivity extends AppCompatActivity
+    implements PermissionResultCallback,View.OnClickListener{
   private final static int PERMISSION_REQUEST_CODE=101;
   private final static int SETTING_REQUEST_CODE=102;
   private int phase;
-
+  private Dialog dialog;
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
@@ -142,30 +143,18 @@ public class PermissionsRequestActivity extends AppCompatActivity implements Per
       message.setText(getMessage(permission));
       Button pos=(Button)view.findViewById(R.id.btn_dialog_pos);
       pos.setText(R.string.settings);
-      pos.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-          dialog.dismiss();
-          openSettingForPermission();
-        }
-      });
+      pos.setOnClickListener(this);
       Button neg=(Button)view.findViewById(R.id.btn_dialog_neg);
       neg.setVisibility(View.VISIBLE);
-      neg.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-          dialog.dismiss();
-          somePermissionsDenied();
-        }
-      });
+      neg.setOnClickListener(this);
       dialog.setContentView(view);
       dialog.setCanceledOnTouchOutside(false);
       dialog.setCancelable(false);
       dialog.onBackPressed();
+      setDialog(dialog);
       dialog.show();
     }
   }
-
 
   @Phase(3)
   @Override
@@ -212,6 +201,23 @@ public class PermissionsRequestActivity extends AppCompatActivity implements Per
     String appName=ResourcesUtils.getString(this,R.string.app_name);
     String tail=DangerousPermissionPrinciple.translateTail(this,permission);
     return String.format(Locale.getDefault(),builder,head,appName,tail);
+  }
+
+  public void setDialog(Dialog dialog){
+    this.dialog = dialog;
+  }
+
+  @Override
+  public void onClick(View v){
+    if(dialog != null&& dialog.isShowing()){
+      dialog.dismiss();
+    }
+    int vId=v.getId();
+    if(vId == R.id.btn_dialog_neg) {
+      somePermissionsDenied();
+    } else if(vId ==R.id.btn_dialog_pos) {
+      openSettingForPermission();
+    }
   }
 
   @Retention(RetentionPolicy.SOURCE)

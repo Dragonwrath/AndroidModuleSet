@@ -19,17 +19,16 @@ public class LoaderManagerHelper implements LoaderManager.LoaderCallbacks<Cursor
   public final static String SELECTION="selection";
   public final static String SELECTION_ARGS="selectionArgs";
   public final static String SORT_ORDER="sortOrder";
-  private SparseArray<OnLoadFinishedListener> map;
+  private final SparseArray<OnLoadFinishedListener> map;
 
   public LoaderManagerHelper(Context context,LoaderManager manager){
     mContext=context;
     mManager=manager;
+    map = new SparseArray<>();
   }
-
 
   public void initLoader(int code,Bundle bundle,OnLoadFinishedListener listener){
     mManager.initLoader(code,bundle,this);
-    if(map==null) map=new SparseArray<>();
     map.put(code,listener);
   }
 
