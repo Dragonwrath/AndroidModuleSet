@@ -5,6 +5,7 @@
   <application>
     <activity android:name=".PermissionsRequestActivity"
               android:launchMode="singleTop"
+              android:screenOrientation="portrait"
               android:theme="@style/NoAnimationTheme">
     </activity>
   </application>

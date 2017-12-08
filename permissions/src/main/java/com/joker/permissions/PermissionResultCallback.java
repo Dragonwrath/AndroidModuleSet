@@ -1,6 +1,6 @@
 package com.joker.permissions;
 
-interface PermissionResultCallback{
+public interface PermissionResultCallback{
   void allPermissionGranted();
   void somePermissionsDenied();
 }
