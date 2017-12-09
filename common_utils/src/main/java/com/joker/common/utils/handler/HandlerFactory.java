@@ -24,7 +24,9 @@ public class HandlerFactory{
   }
 
   public static Handler newInstance(String looperName, Handler.Callback callback) {
-    Looper looper=new HandlerThread(looperName).getLooper();
+    HandlerThread thread=new HandlerThread(looperName);
+    thread.start();
+    Looper looper=thread.getLooper();
     Handler handler=new Handler(looper,callback);
     MAP.put(looperName, handler);
     return handler;

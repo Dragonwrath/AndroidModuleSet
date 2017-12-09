@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/main"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  <TextureView
+    android:id="@+id/preview"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"/>
+
+  <ListView
+    android:id="@+id/list"
+    android:layout_below="@id/preview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
+  <EditText
+    android:id="@+id/et_input"
+    android:drawableRight="@mipmap/ic_launcher"
+    android:drawableEnd="@mipmap/ic_launcher"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white"
+    android:inputType="text"
+
+    />
+</RelativeLayout>

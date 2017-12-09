@@ -3,22 +3,31 @@ package com.joker.main;
 import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.joker.common.utils.LogUtils;
 import com.joker.permissions.BasePermissionActivity;
 import com.joker.photoselector.PhotoSelectorActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity extends BasePermissionActivity {
+public class MainActivity extends BasePermissionActivity{
 
   public final static String TAG=MainActivity.class.getName();
   private ListView list;
@@ -26,16 +35,104 @@ public class MainActivity extends BasePermissionActivity {
   private ArrayAdapter<String> adapter;
   private ImageView image;
   public String[] PERMISSIONS=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+  private TextureView mTextureView;
+  private EditText mEditText;
+  private RelativeLayout mRelativeLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.camera_preview);
+    needRequestPermission(1234,new String[]{Manifest.permission.CAMERA});
+    initCameraPreview();
+  }
+
+  private void initView(){
     list=(ListView)findViewById(R.id.list);
     strings=new ArrayList<>();
-    adapter=new ArrayAdapter<>(this,android.R.layout.activity_list_item,strings);
+    adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,strings);
     list.setAdapter(adapter);
     image=(ImageView)findViewById(R.id.image);
+  }
+
+  private void initCameraPreview(){
+    mRelativeLayout=(RelativeLayout)findViewById(R.id.main);
+    list=(ListView)findViewById(R.id.list);
+    strings=new ArrayList<>();
+    adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,strings);
+    list.setAdapter(adapter);
+    mTextureView=(TextureView)findViewById(R.id.preview);
+    if(!checkHardwareAccelerated(mTextureView)){
+      Log.e(TAG,"HardwareAccelerated is disable");
+    }
+    mEditText=(EditText)findViewById(R.id.et_input);
+    mEditText.setOnTouchListener(new View.OnTouchListener(){
+      @Override
+      public boolean onTouch(View v,MotionEvent event){
+        int action=event.getAction();
+        switch(action){
+          case MotionEvent.ACTION_DOWN:
+            float x=event.getX();
+            float parentX=v.getMeasuredWidth();
+            if(x>0.7*parentX&&x<parentX){
+              Editable text=mEditText.getText();
+              strings.add(text.toString());
+              adapter.notifyDataSetChanged();
+              mEditText.setText("");
+            }
+            return true;
+        }
+        return false;
+      }
+    });
+
+
+    mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener(){
+      private Camera mCamera;
+
+      @Override
+      public void onSurfaceTextureAvailable(SurfaceTexture surface,int width,int height){
+        mCamera=Camera.open();
+        try{
+          mCamera.setPreviewTexture(surface);
+          mCamera.startPreview();
+        }catch(IOException e){
+          e.printStackTrace();
+        }
+      }
+
+      @Override
+      public void onSurfaceTextureSizeChanged(SurfaceTexture surface,int width,int height){
+      }
+
+      @Override
+      public boolean onSurfaceTextureDestroyed(SurfaceTexture surface){
+        if(mCamera!=null){
+          surface.release();
+          mCamera.stopPreview();
+          mCamera.release();
+          return true;
+        }
+        return false;
+      }
+
+      @Override
+      public void onSurfaceTextureUpdated(SurfaceTexture surface){
+        surface.release();
+      }
+    });
+  }
+
+
+  public boolean checkHardwareAccelerated(View source){
+    View view = source;
+    while(view.isHardwareAccelerated()){
+      view =(View)view.getParent();
+      if(view == null){
+        return true;
+      }
+    }
+    return false;
   }
 
   public void pick(View view){
@@ -57,7 +154,7 @@ public class MainActivity extends BasePermissionActivity {
   public void request(View view){
 //    needRequestPermission(12345,PERMISSIONS);
     Intent intent=new Intent(this,PhotoSelectorActivity.class);
-    startActivityForResult(intent, 12342);
+    startActivityForResult(intent,12342);
   }
 
   @Override
