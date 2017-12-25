@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="camera_unusable">摄像头开启失败，请检查</string>
+  <string name="camera_open_failed">摄像头开启失败，请检查相应权限</string>
+</resources>

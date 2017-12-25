@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.MainThread;
+import android.support.annotation.WorkerThread;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
@@ -19,14 +21,22 @@ public class HandlerFactory{
     throw new AssertionError("This class can not be instantiated");
   }
 
+  @MainThread
   public static Handler newInstance(Context context,Handler.Callback callback){
     return new WeakHandler(context,callback);
   }
 
+  @WorkerThread
   public static Handler newInstance(String looperName, Handler.Callback callback) {
-    HandlerThread thread=new HandlerThread(looperName);
-    thread.start();
-    Looper looper=thread.getLooper();
+    Looper looper;
+    Handler another=MAP.get(looperName);
+    if(another == null){
+      HandlerThread thread=new HandlerThread(looperName);
+      thread.start();
+      looper=thread.getLooper();
+    } else {
+      looper = another.getLooper();
+    }
     Handler handler=new Handler(looper,callback);
     MAP.put(looperName, handler);
     return handler;
@@ -53,10 +63,11 @@ public class HandlerFactory{
     }
 
     @Override
-    public void handleMessage(Message msg){
-      if(reference.get()!= null) {
-        dispatchMessage(msg);
+    public void dispatchMessage(Message msg){
+      if(reference.get()==null){
+        return;
       }
+      super.dispatchMessage(msg);
     }
   }
 }

@@ -27,4 +27,5 @@ dependencies {
 	compile project(':common_utils')
 	compile project(':photoselector')
 	compile project(':permissions')
+	compile project(path: ':camera')
 }

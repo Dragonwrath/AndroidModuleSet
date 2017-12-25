@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.joker.common.utils.LogUtils;
 import com.joker.permissions.BasePermissionActivity;
-import com.joker.photoselector.PhotoSelectorActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,9 +41,9 @@ public class MainActivity extends BasePermissionActivity{
   @Override
   protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.camera_preview);
+    setContentView(R.layout.activity_main);
     needRequestPermission(1234,new String[]{Manifest.permission.CAMERA});
-    initCameraPreview();
+    initView();
   }
 
   private void initView(){
@@ -61,6 +60,20 @@ public class MainActivity extends BasePermissionActivity{
     strings=new ArrayList<>();
     adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,strings);
     list.setAdapter(adapter);
+  }
+
+  private void initCameraV2(){
+    mTextureView=(TextureView)findViewById(R.id.preview);
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode,int resultCode,Intent data){
+    super.onActivityResult(requestCode,resultCode,data);
+    if(resultCode==RESULT_OK){
+    }
+  }
+
+  private void initCameraV1(){
     mTextureView=(TextureView)findViewById(R.id.preview);
     if(!checkHardwareAccelerated(mTextureView)){
       Log.e(TAG,"HardwareAccelerated is disable");
@@ -85,8 +98,6 @@ public class MainActivity extends BasePermissionActivity{
         return false;
       }
     });
-
-
     mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener(){
       private Camera mCamera;
 
@@ -125,10 +136,10 @@ public class MainActivity extends BasePermissionActivity{
 
 
   public boolean checkHardwareAccelerated(View source){
-    View view = source;
+    View view=source;
     while(view.isHardwareAccelerated()){
-      view =(View)view.getParent();
-      if(view == null){
+      view=(View)view.getParent();
+      if(view==null){
         return true;
       }
     }
@@ -152,9 +163,6 @@ public class MainActivity extends BasePermissionActivity{
   }
 
   public void request(View view){
-//    needRequestPermission(12345,PERMISSIONS);
-    Intent intent=new Intent(this,PhotoSelectorActivity.class);
-    startActivityForResult(intent,12342);
   }
 
   @Override

@@ -1,2 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="camera_unusable">Camera Open Failed.Is camera working?</string>
+  <string name="camera_open_failed">Camera Open Failed:Is permission denied?</string>
+
 </resources>
