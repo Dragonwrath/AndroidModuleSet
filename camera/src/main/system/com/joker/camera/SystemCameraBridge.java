@@ -9,20 +9,20 @@ public class SystemCameraBridge{
 
   private final CameraBase camera;
 
-  public SystemCameraBridge(AppCompatActivity activity) {
-    camera = new AppCompatActivityCamera(activity);
+  public SystemCameraBridge(AppCompatActivity activity){
+    camera=new AppCompatActivityCamera(activity);
   }
 
   public SystemCameraBridge(Fragment fragment){
-    camera= new FragmentCamera(fragment);
+    camera=new FragmentCamera(fragment);
   }
 
   public void openCamera(int requestCode) throws CameraOpenFailedException{
-    camera.openCamera(requestCode);
+    camera.openCamera(requestCode,true,false);
   }
 
   public void openCamera(int requestCode,boolean useThumbnail,boolean useExternal) throws CameraOpenFailedException{
-    camera.openCamera(requestCode,useThumbnail, useExternal);
+    camera.openCamera(requestCode,useThumbnail,useExternal);
   }
 
   public void handleResult(Intent data,ImageView view){

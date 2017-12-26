@@ -30,10 +30,6 @@ abstract class CameraBase<Host>{
     mHost=host;
   }
 
-  void openCamera(int requestCode) throws CameraOpenFailedException{
-    openCamera(requestCode,true,false);
-  }
-
   void openCamera(int requestCode,boolean useThumbnail,boolean useExternal) throws CameraOpenFailedException{
     isUseThumb=useThumbnail;
     PackageManager manager=getContext().getPackageManager();

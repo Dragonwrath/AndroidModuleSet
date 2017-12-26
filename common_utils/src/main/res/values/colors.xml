@@ -1,3 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+  <color name="main_color">#5c99ff</color>
+  <color name="main_dark_color">#aa5c99ff</color>
+
+  <color name="main_tab_bg">#aaffff</color>
+
+  <color name="white">#ffffff</color>
+  <color name="white_press">#f0f0f0</color>
+  <color name="dark_grey">#333333</color>
+  <color name="grey">#666666</color>
+  <color name="light_grey">#999999</color>
+  <color name="super_light_grey">#e0e0e0</color>
+
+
+  <color name="colorPrimary">@color/main_color</color>
+  <color name="colorPrimaryDark">@color/main_dark_color</color>
+  <color name="colorAccent">#FF4081</color>
+
+
 </resources>

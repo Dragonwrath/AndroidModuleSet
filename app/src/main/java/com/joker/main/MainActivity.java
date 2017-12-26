@@ -2,12 +2,9 @@ package com.joker.main;
 
 import android.Manifest;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -20,7 +17,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.joker.common.utils.LogUtils;
+import com.joker.common.utils.dialog.TipsDialog;
 import com.joker.permissions.BasePermissionActivity;
 
 import java.io.IOException;
@@ -42,8 +39,8 @@ public class MainActivity extends BasePermissionActivity{
   protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    needRequestPermission(1234,new String[]{Manifest.permission.CAMERA});
-    initView();
+//    needRequestPermission(1234,new String[]{Manifest.permission.CAMERA});
+//    initView();
   }
 
   private void initView(){
@@ -147,22 +144,35 @@ public class MainActivity extends BasePermissionActivity{
   }
 
   public void pick(View view){
-    ArrayList<String> imageList=new ArrayList<>();
-    Cursor imageCursor=getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,new String[]{MediaStore.Images.Media.DATA,MediaStore.Images.Media._ID},null,null,MediaStore.Images.Media._ID);
-    if(imageCursor!=null){
-      LogUtils.w(TAG," cursor is null");
-      while(imageCursor.moveToNext()){
-        imageList.add(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)));
-      }
-      imageCursor.close();
-      for(String s : imageList) {
-        LogUtils.w(TAG,s);
-      }
-    }
-    image.setImageURI(Uri.parse(imageList.get(imageList.size()-1)));
+//    ArrayList<String> imageList=new ArrayList<>();
+//    Cursor imageCursor=getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,new String[]{MediaStore.Images.Media.DATA,MediaStore.Images.Media._ID},null,null,MediaStore.Images.Media._ID);
+//    if(imageCursor!=null){
+//      LogUtils.w(TAG," cursor is null");
+//      while(imageCursor.moveToNext()){
+//        imageList.add(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)));
+//      }
+//      imageCursor.close();
+//      for(String s : imageList) {
+//        LogUtils.w(TAG,s);
+//      }
+//    }
+//    image.setImageURI(Uri.parse(imageList.get(imageList.size()-1)));
+
+    new TipsDialog.Builder(this)
+        .setMessage(R.string.app_name)
+        .setTitle(R.string.title)
+        .setTitleDrawable(R.drawable.number_bg)
+        .setPositiveBtnTxt(R.string.confirm).show();
+
   }
 
   public void request(View view){
+    new TipsDialog.Builder(this)
+        .setMessage(R.string.app_name)
+        .setTitle(R.string.title)
+        .setNegativeBtnTxt(R.string.cancel)
+        .setPositiveBtnTxt(R.string.confirm).show();
+
   }
 
   @Override
