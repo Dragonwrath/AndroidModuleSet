@@ -5,4 +5,6 @@
   <string name="content">Content</string>
   <string name="confirm">Confirm</string>
   <string name="cancel">Cancel</string>
+  <string name="settings">Setting</string>
+  <string name="tips">Tips</string>
 </resources>

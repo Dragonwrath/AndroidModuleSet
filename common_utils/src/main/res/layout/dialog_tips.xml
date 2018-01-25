@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginBottom="5dp"
+  android:layout_marginTop="5dp"
+  android:background="@color/white"
+  >
+
+  <TextView
+    android:id="@+id/title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="@dimen/m_space"
+    android:gravity="center_horizontal"
+    android:textColor="@color/colorPrimary"
+    android:textSize="@dimen/xl_text_size"
+    android:text="@string/tips"
+    tools:text="hahahahha"
+    />
+
+  <TextView
+    android:id="@+id/message"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/title"
+    android:layout_marginTop="@dimen/l_space"
+    android:padding="@dimen/m_space"
+    android:textColor="@color/colorPrimary"
+    android:textSize="@dimen/l_text_size"
+    tools:text="    hahahahhahaha"
+    />
+
+  <TextView
+    android:id="@+id/confirm"
+    style="@style/TipsButton"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:text="@string/settings"
+    android:textColor="@color/colorPrimary"
+    />
+
+  <TextView
+    android:id="@+id/cancel"
+    style="@style/TipsButton"
+    android:layout_toLeftOf="@id/confirm"
+    android:layout_toStartOf="@id/confirm"
+    android:text="@string/cancel"
+    android:textColor="@color/light_grey"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+</RelativeLayout>

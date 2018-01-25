@@ -157,7 +157,6 @@ public class MainActivity extends BasePermissionActivity{
 //      }
 //    }
 //    image.setImageURI(Uri.parse(imageList.get(imageList.size()-1)));
-
     new TipsDialog.Builder(this)
         .setMessage(R.string.app_name)
         .setTitle(R.string.title)

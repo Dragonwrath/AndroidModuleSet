@@ -1,115 +1,106 @@
 package com.joker.common.utils.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.DrawableRes;
+import android.content.DialogInterface;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.widget.TextView;
 
 import com.joker.common.utils.R;
 
+public class TipsDialog extends AppCompatDialog implements View.OnClickListener{
 
-public class TipsDialog extends Dialog{
+  private DialogInterface.OnClickListener mPosListener;
+  private DialogInterface.OnClickListener mNegListener;
 
-
-  public TipsDialog(Context context,int themeResId){
-    super(context,themeResId);
+  public TipsDialog(@NonNull Context context){
+    this(context,R.style.BaseDialog,R.layout.dialog_tips);
   }
 
-  public static class Builder{
-    private TipsDialog mDialog;
-    private @StringRes int title;
-    private @DrawableRes int drawable;
-    private @StringRes int message;
-    private @StringRes int posTxt;
-    private View.OnClickListener posAct;
-    private @StringRes int negTxt;
-    private View.OnClickListener negAct;
+  public TipsDialog(@NonNull Context context,@LayoutRes int resId){
+    this(context,R.style.BaseDialog,resId);
+  }
 
-    public Builder(Context context){
-      this(context,R.style.BaseDialog);
-    }
+  public TipsDialog(@NonNull Context context,@StyleRes int themeResId,@LayoutRes int resId){
+    super(context,themeResId);
+    setContentView(resId);
+    setCancelable(false);
+    setCanceledOnTouchOutside(false);
+  }
 
-    public Builder(Context context,@StyleRes int resId){
-      mDialog=new TipsDialog(context,resId);
-      mDialog.setContentView(R.layout.tips_dialog);
-    }
-
-    public Builder setTitle(@StringRes int resId){
-      title=resId;
-      return this;
-    }
-
-    public Builder setTitleDrawable(@DrawableRes int resId){
-      drawable=resId;
-      return this;
-    }
-
-    public Builder setMessage(@StringRes int resId){
-      message=resId;
-      return this;
-    }
-
-    public Builder setPositiveBtnTxt(@StringRes int resId){
-      posTxt=resId;
-      return this;
-    }
-
-    public Builder setPositiveButtonListener(View.OnClickListener action){
-      posAct=action;
-      return this;
-    }
-
-
-    public Builder setNegativeBtnTxt(@StringRes int resId){
-      negTxt=resId;
-      return this;
-    }
-
-    public Builder setNegativeButtonListener(View.OnClickListener action){
-      negAct=action;
-      return this;
-    }
-
-    public TipsDialog create(){
-      TextView title=(TextView)mDialog.findViewById(R.id.title);
-      title.setText(this.title);
-      if(drawable>0)
-        title.setCompoundDrawables(mDialog.getContext().getResources().getDrawable(drawable),null,null,null);
-      TextView message=(TextView)mDialog.findViewById(R.id.message);
-      message.setText(this.message);
-      if(negTxt>0){
-        TextView negBtn=(TextView)mDialog.findViewById(R.id.cancel);
-        negBtn.setText(negTxt);
-        negBtn.setOnClickListener(new View.OnClickListener(){
-          @Override
-          public void onClick(View v){
-            mDialog.dismiss();
-            if(negAct!=null) negAct.onClick(v);
-          }
-        });
-        negBtn.setVisibility(View.VISIBLE);
+  public void setPositiveButton(
+      @StringRes int resId,@Nullable DialogInterface.OnClickListener action,boolean isWaring){
+    TextView confirm=(TextView)findViewById(R.id.confirm);
+    if(confirm!=null){
+      confirm.setText(resId);
+      Context context=confirm.getContext();
+      int color;
+      if(isWaring){
+        color=ContextCompat.getColor(context,R.color.colorAccent);
+      }else{
+        color=ContextCompat.getColor(context,R.color.colorPrimary);
       }
-      TextView posBtn=(TextView)mDialog.findViewById(R.id.confirm);
-      posBtn.setText(posTxt);
-      posBtn.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-          mDialog.dismiss();
-          if(posAct!=null) posAct.onClick(v);
-        }
-      });
-
-      return mDialog;
+      confirm.setTextColor(color);
+      confirm.setOnClickListener(this);
+      mPosListener=action;
     }
+  }
 
-    public TipsDialog show(){
-      create();
-      mDialog.show();
-      return mDialog;
+  public void setNegativeButton(
+      @StringRes int resId,@Nullable DialogInterface.OnClickListener action){
+    TextView cancel=(TextView)findViewById(R.id.cancel);
+    if(cancel!=null){
+      cancel.setText(resId);
+      cancel.setVisibility(View.VISIBLE);
+      cancel.setOnClickListener(this);
+      mNegListener=action;
     }
+  }
 
+  @Override
+  public void setTitle(CharSequence title){
+    TextView tvTitle=(TextView)findViewById(R.id.title);
+    if(tvTitle!=null)
+      tvTitle.setText(title);
+  }
+
+  @Override
+  public void setTitle(@StringRes int resId){
+    TextView title=(TextView)findViewById(R.id.title);
+    if(title!=null)
+      title.setText(resId);
+  }
+
+  public void setMessage(@StringRes int resId){
+    TextView message=(TextView)findViewById(R.id.message);
+    if(message!=null){
+      message.setText(resId);
+    }
+  }
+
+  public void setMessage(CharSequence message){
+    TextView tvMessage=(TextView)findViewById(R.id.message);
+    if(tvMessage!=null){
+      tvMessage.setText(message);
+    }
+  }
+
+  @Override
+  public void onClick(View v){
+    int id=v.getId();
+    if(id==R.id.confirm){
+      if(mPosListener!=null)
+        mPosListener.onClick(this,DialogInterface.BUTTON_POSITIVE);
+    }else if(id==R.id.cancel){
+      if(mNegListener!=null)
+        mNegListener.onClick(this,DialogInterface.BUTTON_NEGATIVE);
+    }
+    dismiss();
   }
 }

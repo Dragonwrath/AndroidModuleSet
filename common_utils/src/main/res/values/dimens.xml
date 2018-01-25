@@ -5,4 +5,36 @@
   <dimen name="normal_line_size">1dp</dimen>
   <dimen name="normal_margin">5dp</dimen>
   <dimen name="large_margin">10dp</dimen>
+
+  <!--normal space-->
+  <dimen name="xxl_space">48dp</dimen>
+  <dimen name="xl_space">24dp</dimen>
+  <dimen name="l_space">16dp</dimen>
+  <dimen name="m_space">8dp</dimen>
+  <dimen name="s_space">4dp</dimen>
+  <dimen name="xs_space">2dp</dimen>
+  <dimen name="xxs_space">1dp</dimen>
+
+  <!--normal text size-->
+  <dimen name="s_text_size">12sp</dimen>
+  <dimen name="m_text_size">14sp</dimen>
+  <dimen name="l_text_size">18sp</dimen>
+  <dimen name="xl_text_size">22sp</dimen>
+  <dimen name="xxl_text_size">26sp</dimen>
+  <!-- Default screen margins, per the Android Design guidelines. -->
+  <dimen name="activity_horizontal_margin">16dp</dimen>
+  <dimen name="activity_vertical_margin">16dp</dimen>
+
+  <!--normal image size-->
+  <dimen name="xxxl_img_space">128dp</dimen>
+  <dimen name="xxl_img_space">96dp</dimen>
+  <dimen name="xl_img_space">72dp</dimen>
+  <dimen name="l_img_space">64dp</dimen>
+  <dimen name="m_img_space">48dp</dimen>
+  <dimen name="s_img_space">32dp</dimen>
+
+  <dimen name="photo_container">80dp</dimen>
+  <dimen name="photo_image">64dp</dimen>
+  <dimen name="photo_del">32dp</dimen>
+  <dimen name="photo_del_margin">14dp</dimen>
 </resources>
