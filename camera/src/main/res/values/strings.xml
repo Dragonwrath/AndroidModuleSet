@@ -2,5 +2,6 @@
 <resources>
   <string name="camera_unusable">Camera Open Failed.Is camera working?</string>
   <string name="camera_open_failed">Camera Open Failed:Is permission denied?</string>
+  <string name="external_write_failed">Storage Permission request failed,or not enough space for writing</string>
 
 </resources>

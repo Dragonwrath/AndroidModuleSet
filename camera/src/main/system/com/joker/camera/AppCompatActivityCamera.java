@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
-class AppCompatActivityCamera extends CameraBase<AppCompatActivity>{
+class AppCompatActivityCamera extends CameraCore<AppCompatActivity>{
 
-  AppCompatActivityCamera(AppCompatActivity activity){
-    super(activity);
+  AppCompatActivityCamera(AppCompatActivity act,Params params){
+    super(act,params);
   }
 
   @Override
@@ -16,7 +16,7 @@ class AppCompatActivityCamera extends CameraBase<AppCompatActivity>{
   }
 
   @Override
-  void startActivityProxy(int requestCode,Intent intent){
-    mHost.startActivityForResult(intent,requestCode);
+  void startActivityProxy(Intent intent){
+    mHost.startActivityForResult(intent,mParams.code);
   }
 }

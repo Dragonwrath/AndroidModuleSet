@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-class FragmentCamera extends CameraBase<Fragment>{
+class FragmentCamera extends CameraCore<Fragment>{
 
-  FragmentCamera(Fragment fragment){
-    super(fragment);
+  FragmentCamera(Fragment frag,Params params){
+    super(frag,params);
   }
 
   @Override
@@ -16,7 +16,7 @@ class FragmentCamera extends CameraBase<Fragment>{
   }
 
   @Override
-  void startActivityProxy(int requestCode,Intent intent){
-    mHost.startActivityForResult(intent,requestCode);
+  void startActivityProxy(Intent intent){
+    mHost.startActivityForResult(intent,mParams.code);
   }
 }

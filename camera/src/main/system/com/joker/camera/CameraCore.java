@@ -12,43 +12,43 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.joker.common.utils.ResourcesUtils;
 import com.joker.common.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 
-abstract class CameraBase<Host>{
+abstract class CameraCore<Host>{
   private Uri mUri;
   private File mFile;
-  private boolean isUseThumb;
   final Host mHost;
+  Params mParams;
 
-  CameraBase(Host host){
+  CameraCore(Host host,Params params){
     mHost=host;
+    mParams=params;
   }
 
-  void openCamera(int requestCode,boolean useThumbnail,boolean useExternal) throws CameraOpenFailedException{
-    isUseThumb=useThumbnail;
+  void openCamera() throws CameraOpenFailedException{
     PackageManager manager=getContext().getPackageManager();
     if(!manager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-      throw new CameraOpenFailedException(ResourcesUtils.getString(getContext(),R.string.camera_unusable));
+      throw new CameraOpenFailedException(getContext().getString(R.string.camera_unusable));
     }
     Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     if(intent.resolveActivity(manager)==null){
-      throw new CameraOpenFailedException(ResourcesUtils.getString(getContext(),R.string.camera_open_failed));
+      throw new CameraOpenFailedException(getContext().getString(R.string.camera_open_failed));
     }
-    if(!isUseThumb){
-      storageExternalPath(useExternal);
+    if(!mParams.useThumbnail){
+      storageExternalPath(mParams.useExternal);
       if(mUri!=null){
         intent.putExtra(MediaStore.EXTRA_OUTPUT,mUri);
       }else{
-        throw new CameraOpenFailedException("couldn't write storage");
+        throw new CameraOpenFailedException(getContext().getString(R.string.external_write_failed));
       }
     }
-    startActivityProxy(requestCode,intent);
+    startActivityProxy(intent);
   }
 
   private void storageExternalPath(boolean useExternal){
@@ -62,18 +62,25 @@ abstract class CameraBase<Host>{
         root=getContext().getFilesDir();
       }
     }
-    mFile=FileUtils.produceFile(root,"",".jpg");
+    if(!TextUtils.isEmpty(mParams.root)){
+      root = new File(root,mParams.root);
+    }
+    mFile=FileUtils.produceTmpFile(root,mParams.fileName,mParams.suffix);
     if(mFile!=null) mUri=FileUtils.getFileUri(getContext(),mFile);
   }
 
   void handleActivityResult(Intent intent,ImageView image){
-    if(isUseThumb){
+    if(mParams.useThumbnail){
       Bundle extras=intent.getExtras();
       Bitmap bitmap=(Bitmap)extras.get("data");
       image.setImageBitmap(bitmap);
     }else{
       addPicToView(image);
     }
+  }
+
+  Uri getOutputUri(){
+    return mUri;
   }
 
   private void addPicToView(ImageView view){
@@ -126,16 +133,9 @@ abstract class CameraBase<Host>{
     view.setImageBitmap(dst);
   }
 
-  private void sendBroadcast(){
-    if(mUri!=null){
-      Intent mediaScanIntent=new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-      mediaScanIntent.setData(mUri);
-      getContext().sendBroadcast(mediaScanIntent);
-    }
-  }
 
   abstract Context getContext();
 
-  abstract void startActivityProxy(int requestCode,Intent intent);
+  abstract void startActivityProxy(Intent intent);
 
 }

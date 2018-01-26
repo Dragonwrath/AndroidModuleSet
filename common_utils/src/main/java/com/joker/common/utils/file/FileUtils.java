@@ -10,9 +10,6 @@ import android.text.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class FileUtils{
   private FileUtils() {
@@ -20,15 +17,42 @@ public class FileUtils{
   }
 
   @Nullable
-  public static File produceFile(File root,String fileName,@NonNull String suffix){
-    String realName=new SimpleDateFormat("yyyyMMdd_HHmmss",Locale.getDefault()).format(new Date());
-    if(!TextUtils.isEmpty(fileName)){
-      realName += fileName;
+  public static File produceFile(File root,String fileName,String suffix){
+    if(root==null|| root.isFile()||TextUtils.isEmpty(fileName)||TextUtils.isEmpty(suffix))
+      return null;
+    if(!root.exists()) {
+      //noinspection all
+      root.mkdirs();
+    }
+    File file=new File(root,fileName+suffix);
+    try{
+      file.deleteOnExit();
+      //noinspection all
+      file.createNewFile();
+      return file;
+    }catch(Exception e){
+      return null;
+    }
+  }
+
+  @Nullable
+  public static File produceTmpFile(String root,String fileName,String suffix){
+    File file=new File(root);
+    return produceTmpFile(file,fileName,suffix);
+  }
+
+  @Nullable
+  public static File produceTmpFile(File root,String fileName,@NonNull String suffix){
+    if(root==null|| !root.isDirectory()) return null;
+    if(!root.exists()) {
+      if(!root.mkdirs()){
+        return null;
+      }
     }
     File file= null;
     try{
       file = File.createTempFile(
-          realName,  /* prefix */
+          fileName,  /* prefix */
           suffix,         /* suffix */
           root      /* directory */
       );
@@ -40,7 +64,7 @@ public class FileUtils{
 
 
   @Nullable
-  public static Uri getFileUri(@NonNull Context context,@NonNull File file){
+  public static Uri getFileUri(Context context,File file){
     if(file == null || context == null) return  null;
     Uri fileUri;
     if(!file.exists()){

@@ -2,4 +2,5 @@
 <resources>
   <string name="camera_unusable">摄像头开启失败，请检查</string>
   <string name="camera_open_failed">摄像头开启失败，请检查相应权限</string>
+  <string name="external_write_failed">无法写入文件，请检查是否开启存储权限，以及空间是否足够</string>
 </resources>
