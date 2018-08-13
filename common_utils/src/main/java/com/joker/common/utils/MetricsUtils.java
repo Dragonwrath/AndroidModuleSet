@@ -18,4 +18,6 @@ public final class MetricsUtils{
     return (int)(px*1.0f/resources.getDisplayMetrics().density+0.5f);
   }
 
+
+
 }

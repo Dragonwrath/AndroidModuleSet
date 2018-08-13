@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
 	compileSdkVersion rootProject.ext.compile
@@ -21,8 +22,12 @@ android {
 }
 
 dependencies {
-	compile fileTree(include: ['*.jar'], dir: 'libs');
-	compile "com.android.support:appcompat-v7:${rootProject.ext.supportVersion}";
-	compile "com.android.support:support-v4:${rootProject.ext.supportVersion}";
-	compile project(':common_utils');
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
+	implementation rootProject.ext.libs['v4']
+	implementation rootProject.ext.libs['v7']
+	implementation project(':common_utils')
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+repositories {
+	mavenCentral()
 }
