@@ -25,11 +25,12 @@ android {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 	implementation rootProject.ext.libs['v7']
+	implementation rootProject.ext.libs['kotlin8']
 	implementation project(':common_utils')
 	implementation project(':photoselector')
 	implementation project(':permissions')
 	implementation project(path: ':camera')
-	implementation rootProject.ext.libs['kotlin8']
+	implementation project(':login')
 }
 repositories {
 	mavenCentral()
