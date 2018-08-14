@@ -54,6 +54,12 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
  }
 
  @Override
+ protected void onDestroy(){
+  super.onDestroy();
+  mWxApi.unregisterApp();
+ }
+
+ @Override
  protected void onNewIntent(Intent intent){
   super.onNewIntent(intent);
   mWxApi.handleIntent(getIntent(),this);
