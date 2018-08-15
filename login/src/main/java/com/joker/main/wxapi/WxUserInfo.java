@@ -21,7 +21,7 @@ public class WxUserInfo extends UserInfo{
  }
 
  @Override
- public int getType(){
+ public int getChannel(){
   return Channel.WECHAT;
  }
 }

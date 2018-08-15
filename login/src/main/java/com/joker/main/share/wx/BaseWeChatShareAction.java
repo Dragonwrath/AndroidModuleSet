@@ -1,19 +1,10 @@
 package com.joker.main.share.wx;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaDataSource;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.joker.main.Constant;
-import com.joker.main.share.ShareAction;
-import com.joker.main.share.bean.ImageShareBean;
-import com.joker.main.share.bean.TextShareBean;
-import com.joker.main.share.bean.VideoShareBean;
-import com.joker.main.share.bean.WebShareBean;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -25,8 +16,21 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
+import com.joker.main.Constant;
+import com.joker.main.share.ShareAction;
+import com.joker.main.share.bean.ImageShareBean;
+import com.joker.main.share.bean.TextShareBean;
+import com.joker.main.share.bean.VideoShareBean;
+import com.joker.main.share.bean.WebShareBean;
+
+/***
+ * 微信关于缩略图的限制大小为32768，30KB
+ * 微信单张图片的大小不能超过10MB
+ * 微信关于文件的名称长度不能超过1024
+ */
 abstract class BaseWeChatShareAction implements ShareAction{
 
  private final static int THUMB_SIZE=150;
@@ -52,48 +56,34 @@ abstract class BaseWeChatShareAction implements ShareAction{
   WXTextObject textObj=new WXTextObject();
   textObj.text=text;
   WXMediaMessage msg=new WXMediaMessage();
+  msg.title=bean.getTitle();
   msg.mediaObject=textObj;
   msg.description=text;
   SendMessageToWX.Req req=new SendMessageToWX.Req();
   req.transaction=buildTransaction("text");
   req.message=msg;
   req.scene=getScene();
+
   mWxApi.sendReq(req);
  }
 
  @Override
  public void sendImage(ImageShareBean bean) throws IllegalArgumentException{
   File file=bean.getFile();
+  //todo should to compress
   if(file==null||!file.exists()||file.length()>10*1024*1024||!file.canRead()){
    throw new IllegalArgumentException("file not exist or file is too large or couldn't to read");
   }
-  Bitmap bmp=null;
-  Bitmap thumbBmp=null;
-  try{
-   bmp=BitmapFactory.decodeFile(file.getAbsolutePath());
-   WXImageObject imgObj=new WXImageObject(bmp);
-
-   WXMediaMessage msg=new WXMediaMessage();
-   msg.mediaObject=imgObj;
-   if(TextUtils.isEmpty(bean.getTitle())) msg.title=bean.getTitle();
-
-   //generate thumb
-   thumbBmp=Bitmap.createScaledBitmap(bmp,THUMB_SIZE,THUMB_SIZE,true);
-   msg.thumbData=bmpToByteArray(thumbBmp);
-   SendMessageToWX.Req req=new SendMessageToWX.Req();
-   req.transaction=buildTransaction("img");
-   req.message=msg;
-   req.scene=getScene();
-   mWxApi.sendReq(req);
-  }finally{
-   if(bmp!=null)
-    bmp.recycle();
-   if(thumbBmp!=null)
-    thumbBmp.recycle();
-   if(Build.VERSION.SDK_INT<21){
-    System.gc();
-   }
-  }
+  WXImageObject imgObj=new WXImageObject();
+  imgObj.imagePath=file.getAbsolutePath();
+  WXMediaMessage msg=new WXMediaMessage();
+  msg.mediaObject=imgObj;
+  if(TextUtils.isEmpty(bean.getTitle())) msg.title=bean.getTitle();
+  SendMessageToWX.Req req=new SendMessageToWX.Req();
+  req.transaction=buildTransaction("img");
+  req.message=msg;
+  req.scene=getScene();
+  mWxApi.sendReq(req);
  }
 
  @Override
@@ -117,7 +107,7 @@ abstract class BaseWeChatShareAction implements ShareAction{
    req.message=msg;
    req.scene=getScene();
    mWxApi.sendReq(req);
-  } finally{
+  }finally{
    if(bmp!=null)
     bmp.recycle();
    if(thumbBmp!=null)
@@ -133,12 +123,12 @@ abstract class BaseWeChatShareAction implements ShareAction{
   Bitmap bmp=null;
   Bitmap thumbBmp=null;
   try{
-   WXWebpageObject webpage=new WXWebpageObject();
-   webpage.webpageUrl=bean.getUrl();
-   if(!webpage.checkArgs()) {
+   WXWebpageObject webPage=new WXWebpageObject();
+   webPage.webpageUrl=bean.getUrl();
+   if(!webPage.checkArgs()){
     throw new IllegalArgumentException("url maybe is null,or too long");
    }
-   WXMediaMessage msg=new WXMediaMessage(webpage);
+   WXMediaMessage msg=new WXMediaMessage(webPage);
    msg.title=bean.getTitle();
    msg.description=bean.getMessage();
    bmp=BitmapFactory.decodeFile(bean.getThumb());
@@ -150,7 +140,7 @@ abstract class BaseWeChatShareAction implements ShareAction{
    req.message=msg;
    req.scene=getScene();
    mWxApi.sendReq(req);
-  } finally{
+  }finally{
    if(bmp!=null)
     bmp.recycle();
    if(thumbBmp!=null)
@@ -165,13 +155,28 @@ abstract class BaseWeChatShareAction implements ShareAction{
   return (type==null)?String.valueOf(System.currentTimeMillis()): type+System.currentTimeMillis();
  }
 
- private static byte[] bmpToByteArray(final Bitmap bmp){
+ private static byte[] bmpToByteArray(final Bitmap bmp) throws IllegalArgumentException{
+  //todo 需要处理图片角度的问题
   ByteArrayOutputStream output=new ByteArrayOutputStream();
   try{
-   bmp.compress(Bitmap.CompressFormat.PNG,100,output);
+   int quality=100;
+   while(output.size()==0||output.size()>32768){
+    output.reset();
+    bmp.compress(Bitmap.CompressFormat.JPEG,quality,output);
+    quality-=10;
+    try{
+     output.flush();
+    }catch(IOException e){
+     e.printStackTrace();
+    }
+    if(quality==0){
+     throw new IllegalArgumentException("thumb can't be compressed");
+    }
+   }
   }finally{
    bmp.recycle();
    try{
+    output.flush();
     output.close();
    }catch(Exception e){
     e.printStackTrace();

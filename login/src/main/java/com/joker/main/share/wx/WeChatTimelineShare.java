@@ -3,7 +3,7 @@ import android.content.Context;
 
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 public class WeChatTimelineShare extends BaseWeChatShareAction{
- protected WeChatTimelineShare(Context context){
+ public WeChatTimelineShare(Context context){
   super(context);
  }
 

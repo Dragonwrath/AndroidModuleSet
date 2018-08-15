@@ -3,6 +3,8 @@ package com.joker.main;
 import java.io.Serializable;
 
 public class UserInfo implements Serializable{
+
+ @SuppressWarnings("SpellCheckingInspection")
  public final static class Channel {
   public final static int OFFICIAL=0;
   public final static int WECHAT=1;
@@ -23,7 +25,7 @@ public class UserInfo implements Serializable{
   this.avatar=avatar;
  }
 
- public int getType(){
+ public int getChannel(){
   return Channel.OFFICIAL;
  }
 
