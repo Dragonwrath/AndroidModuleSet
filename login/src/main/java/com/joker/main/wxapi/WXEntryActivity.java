@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.joker.main.Constant;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -46,6 +47,14 @@ import java.util.HashMap;
 public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler{
  private  final IWXAPI mWxApi=WXAPIFactory.createWXAPI(this,Constant.WeChat.APP_ID,true);
 
+ private static class Hints{
+  private final static String errcode_success="发送成功";
+  private final static String errcode_cancel="发送取消";
+  private final static String errcode_deny="发送被拒绝";
+  private final static String errcode_unsupported="不支持错误";
+  private final static String errcode_unknown="发送返回";
+ }
+
  @Override
  protected void onCreate(@Nullable Bundle savedInstanceState){
   super.onCreate(savedInstanceState);
@@ -72,7 +81,36 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
 
  @Override
  public void onResp(BaseResp baseResp){
-  if(baseResp!=null&&baseResp instanceof SendAuth.Resp){
+  if(baseResp==null){
+   this.finish();
+   return;
+  }
+  String result;
+  switch(baseResp.errCode){
+   case BaseResp.ErrCode.ERR_OK:
+    result=Hints.errcode_success;
+    break;
+   case BaseResp.ErrCode.ERR_USER_CANCEL:
+    result=Hints.errcode_cancel;
+    break;
+   case BaseResp.ErrCode.ERR_AUTH_DENIED:
+    result=Hints.errcode_deny;
+    break;
+   case BaseResp.ErrCode.ERR_UNSUPPORT:
+    result=Hints.errcode_unsupported;
+    break;
+   default:
+    result=Hints.errcode_unknown;
+    break;
+  }
+  //type 为2表示的是分享，需要忽略结果
+  if(baseResp.getType()==2||baseResp.errCode!=BaseResp.ErrCode.ERR_OK){
+   Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
+   this.finish();
+   return;
+  }
+
+  if(baseResp instanceof SendAuth.Resp){
    queryUserId((SendAuth.Resp)baseResp);
   }
  }

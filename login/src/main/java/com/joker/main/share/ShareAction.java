@@ -5,11 +5,11 @@ import com.joker.main.share.bean.VideoShareBean;
 import com.joker.main.share.bean.WebShareBean;
 public interface ShareAction{
 
- void sendText(TextShareBean bean) throws IllegalAccessException;
+ void sendText(TextShareBean bean) throws IllegalArgumentException;
 
- void sendWebPage(WebShareBean bean) throws IllegalAccessException;
+ void sendWebPage(WebShareBean bean) throws IllegalArgumentException;
 
- void sendImage(ImageShareBean bean) throws IllegalAccessException;
+ void sendImage(ImageShareBean bean) throws IllegalArgumentException;
 
- void sendVideo(VideoShareBean bean) throws IllegalAccessException;
+ void sendVideo(VideoShareBean bean) throws IllegalArgumentException;
 }
