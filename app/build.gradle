@@ -24,8 +24,8 @@ android {
 
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
-	implementation rootProject.ext.libs['v7']
-	implementation rootProject.ext.libs['kotlin8']
+	implementation rootProject.ext.v7
+	implementation rootProject.ext.kotlin8
 	implementation project(':common_utils')
 	implementation project(':photoselector')
 	implementation project(':permissions')

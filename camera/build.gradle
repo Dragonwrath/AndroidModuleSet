@@ -1,24 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply from : file(rootDir.path+"\\default.gradle")
 
 android {
-	compileSdkVersion rootProject.ext.compile
-	buildToolsVersion rootProject.ext.buildTools
-	defaultConfig {
-		minSdkVersion rootProject.ext.min
-		targetSdkVersion rootProject.ext.target
-		versionCode 1
-		versionName "1.0"
-
-		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-	}
-	buildTypes {
-		release {
-			minifyEnabled false
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-		}
-	}
 	sourceSets {
 		main.java.srcDirs += 'src/main/base'
 		main.java.srcDirs += 'src/main/system'
@@ -29,10 +13,10 @@ android {
 
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
-	implementation rootProject.ext.libs['v7']
-	implementation rootProject.ext.libs['v4']
-	implementation "com.android.support:recyclerview-v7:${rootProject.ext.supportVersion}";
+	compileOnly rootProject.ext.v7
+	compileOnly rootProject.ext.v4
+	compileOnly rootProject.ext.recyclerView
+	compileOnly rootProject.ext.kotlin8
 	implementation project(':common_utils')
-	implementation rootProject.ext.libs['kotlin8']
 }
 

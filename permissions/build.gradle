@@ -23,8 +23,8 @@ android {
 
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
-	implementation rootProject.ext.libs['v4']
-	implementation rootProject.ext.libs['v7']
+	implementation rootProject.ext.v4
+	implementation rootProject.ext.v7
 	implementation project(':common_utils')
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }

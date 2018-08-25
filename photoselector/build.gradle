@@ -24,12 +24,12 @@ android {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	implementation rootProject.ext.libs['v4']
-	implementation rootProject.ext.libs['v7']
-	implementation rootProject.ext.libs['recyclerview']
-	implementation rootProject.ext.libs['constraint']
-	implementation rootProject.ext.libs['glide']
+	implementation rootProject.ext.v4
+	implementation rootProject.ext.v7
+	implementation rootProject.ext.recyclerView
+	implementation rootProject.ext.constraint
+	implementation rootProject.ext.glide
 	implementation project(':common_utils')
 	implementation project(':permissions')
-	implementation rootProject.ext.libs['kotlin8']
+	implementation rootProject.ext.kotlin8
 }
