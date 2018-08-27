@@ -5,13 +5,14 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="$APPLICATION_HOME_DIR$/gradle/gradle-2.14.1" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/camera" />
             <option value="$PROJECT_DIR$/common_utils" />
+            <option value="$PROJECT_DIR$/login" />
+            <option value="$PROJECT_DIR$/notification" />
             <option value="$PROJECT_DIR$/permissions" />
             <option value="$PROJECT_DIR$/photoselector" />
           </set>

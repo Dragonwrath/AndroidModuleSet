@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+apply from : file(rootDir.path+"\\default.gradle")
+
+android {
+	defaultConfig{
+		buildConfigField 'int','NOTIFICATION','1'
+
+	}
+}
+
+dependencies {
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	compileOnly rootProject.ext.v7
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}

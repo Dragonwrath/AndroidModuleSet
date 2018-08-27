@@ -1,28 +1,8 @@
 apply plugin: 'com.android.library'
-
-android {
-	compileSdkVersion rootProject.ext.compile
-	buildToolsVersion rootProject.ext.buildTools
-
-	defaultConfig {
-		minSdkVersion rootProject.ext.min
-		targetSdkVersion rootProject.ext.target
-		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-	}
-
-	buildTypes {
-		release {
-			minifyEnabled false
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-		}
-	}
-
-}
+apply from: file(rootDir.path+"\\default.gradle")
 
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation rootProject.ext.v7
 	implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
-
 }

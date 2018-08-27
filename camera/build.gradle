@@ -12,7 +12,6 @@ android {
 }
 
 dependencies {
-	implementation fileTree(include: ['*.jar'], dir: 'libs')
 	compileOnly rootProject.ext.v7
 	compileOnly rootProject.ext.v4
 	compileOnly rootProject.ext.recyclerView

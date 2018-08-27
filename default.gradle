@@ -1,0 +1,29 @@
+
+android {
+	compileSdkVersion 27
+	buildToolsVersion '27.0.3'
+	defaultConfig {
+		minSdkVersion 18
+		targetSdkVersion 27
+	}
+
+	buildTypes {
+		release {
+			debuggable false
+			minifyEnabled false
+			jniDebuggable false
+			renderscriptDebuggable false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+		debug {
+			debuggable true
+			minifyEnabled false
+			jniDebuggable true
+			renderscriptDebuggable true
+		}
+	}
+}
+
+dependencies {
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
