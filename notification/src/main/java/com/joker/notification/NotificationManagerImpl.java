@@ -37,7 +37,7 @@ public class NotificationManagerImpl{
    int nVersion=preferences.getInt(NOTIFICATION,0);
    if(nVersion<BuildConfig.NOTIFICATION){
     try{
-     //todo
+     //FIXME custom group
      semaphore.tryAcquire(20,TimeUnit.SECONDS);
      ArrayList<NotificationChannelGroup> groups=new ArrayList<>();
      ArrayList<NotificationChannel> channels=new ArrayList<>();
@@ -50,6 +50,11 @@ public class NotificationManagerImpl{
      channel.setGroup(Record.GROUP);
      channels.add(channel);
 
+     NotificationChannel channel1=new NotificationChannel(context.getPackageName(),context.getString(R.string.app_name),NotificationManager.IMPORTANCE_DEFAULT);
+     channel1.setGroup(Record.GROUP);
+     channels.add(channel1);
+
+
      //add all groups and channels
      Object service=context.getSystemService(Context.NOTIFICATION_SERVICE);
      if(service!=null&&service instanceof NotificationManager){
@@ -58,7 +63,7 @@ public class NotificationManagerImpl{
       manager.createNotificationChannels(channels);
      }
 
-     preferences.edit().putBoolean(NOTIFICATION,true).apply();
+     preferences.edit().putInt(NOTIFICATION,BuildConfig.NOTIFICATION).apply();
     }catch(Exception e){
      e.printStackTrace();
     }finally{

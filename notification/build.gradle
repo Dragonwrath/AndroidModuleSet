@@ -1,17 +1,24 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-apply from : file(rootDir.path+"\\default.gradle")
+apply from: file(rootDir.path + "\\default.gradle")
 
 android {
-	defaultConfig{
-		buildConfigField 'int','NOTIFICATION','1'
+	defaultConfig {
+		applicationId "com.joker.module.notification"
+		buildConfigField 'int', 'NOTIFICATION', '1'
+	}
 
+	lintOptions {
+		ignore("SpUsage")
 	}
 }
 
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
-	compileOnly rootProject.ext.v7
-	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+	implementation rootProject.ext.v7
+	implementation rootProject.ext.kotlin8
+	implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 }
+
+apply plugin: 'kotlin-android-extensions'

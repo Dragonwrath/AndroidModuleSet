@@ -11,8 +11,8 @@ import android.text.TextUtils;
 import java.io.File;
 import java.io.IOException;
 
-public class FileUtils{
-  private FileUtils() {
+public class FileFactory{
+  private FileFactory() {
     throw new AssertionError("This class can not be instantiated");
   }
 

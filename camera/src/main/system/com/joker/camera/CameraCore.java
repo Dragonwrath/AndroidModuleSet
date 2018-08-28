@@ -15,7 +15,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.joker.common.utils.file.FileUtils;
+import com.joker.common.utils.file.FileFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,8 +65,8 @@ abstract class CameraCore<Host>{
     if(!TextUtils.isEmpty(mParams.root)){
       root = new File(root,mParams.root);
     }
-    mFile=FileUtils.produceTmpFile(root,mParams.fileName,mParams.suffix);
-    if(mFile!=null) mUri=FileUtils.getFileUri(getContext(),mFile);
+    mFile=FileFactory.produceTmpFile(root,mParams.fileName,mParams.suffix);
+    if(mFile!=null) mUri=FileFactory.getFileUri(getContext(),mFile);
   }
 
   void handleActivityResult(Intent intent,ImageView image){

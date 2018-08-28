@@ -14,6 +14,7 @@ android {
 
 dependencies {
 	implementation rootProject.ext.v7
+	implementation rootProject.ext.constraint
 	implementation rootProject.ext.kotlin8
 	implementation project(':common_utils')
 	implementation project(':photoselector')
