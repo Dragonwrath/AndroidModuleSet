@@ -3,6 +3,8 @@ package com.joker.notification.activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.app.NotificationCompat
+import android.support.v4.app.NotificationManagerCompat
 import android.view.View
 import android.widget.TextView
 import com.joker.notification.MessageNotificationFactory
@@ -43,7 +45,20 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
   }
 
   private fun sendText() {
-    MessageNotificationFactory.produceMessage(this,"哈哈哈哈哈哈哈哈哈哈哈哈")
+//    MessageNotificationFactory.produceMessage(this,"哈哈哈哈哈哈哈哈哈哈哈哈")
+    Handler().postDelayed({
+      val notification = NotificationCompat.Builder(this,packageName)
+          .setSmallIcon(R.drawable.ic_launcher)
+          .setContentTitle("标题")
+          .setContentText("内容")
+          .setVibrate(longArrayOf(0L,1000L))
+          .setPriority(NotificationCompat.PRIORITY_HIGH)
+          .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+          .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+          .build()
+      NotificationManagerCompat.from(this).notify(3234,notification)
+    },3000)
+
   }
 
   private var currentProgress = 0

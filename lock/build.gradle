@@ -1,0 +1,19 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+
+apply from: file(rootDir.path + "\\default.gradle")
+
+android {
+	defaultConfig {
+		applicationId "com.joker.lock"
+	}
+}
+
+dependencies {
+	implementation rootProject.ext.kotlin8
+	implementation rootProject.ext.v7
+	implementation rootProject.ext.constraint
+	implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+}

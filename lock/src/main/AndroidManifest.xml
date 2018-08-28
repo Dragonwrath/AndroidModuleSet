@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.joker.lock">
+
+  <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+
+  <application
+    android:icon="@drawable/ic_launcher"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+    android:allowBackup="false"
+    >
+    <activity android:name=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+
+    <receiver
+      android:name=".LockScreenReceiver"
+      android:enabled="true"
+      android:exported="false">
+    </receiver>
+
+    <service
+      android:name=".MusicService"
+      android:enabled="true"
+      android:exported="false">
+    </service>
+
+    <activity
+      android:name=".LockScreenActivity"
+      android:configChanges="orientation"
+      android:screenOrientation="portrait"
+      android:launchMode="singleTask"
+      android:taskAffinity=":lock"
+      android:excludeFromRecents="true"
+      android:showWhenLocked="true"
+      />
+  </application>
+
+</manifest>

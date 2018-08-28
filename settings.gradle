@@ -1,1 +1,1 @@
-include ':app', ':photoselector', ':common_utils', ':camera', ':permissions', ':login', ':notification'
+include ':app', ':photoselector', ':common_utils', ':camera', ':permissions', ':login', ':notification', ':lock'
