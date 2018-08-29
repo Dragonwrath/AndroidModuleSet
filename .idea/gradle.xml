@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/notification" />
             <option value="$PROJECT_DIR$/permissions" />
             <option value="$PROJECT_DIR$/photoselector" />
+            <option value="$PROJECT_DIR$/utils_kt" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

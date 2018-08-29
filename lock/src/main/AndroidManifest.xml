@@ -5,10 +5,9 @@
   <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
 
   <application
-    android:icon="@drawable/ic_launcher"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
     android:allowBackup="false"
-    >
+    android:icon="@drawable/ic_launcher"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
     <activity android:name=".MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -31,12 +30,14 @@
     <activity
       android:name=".LockScreenActivity"
       android:configChanges="orientation"
-      android:screenOrientation="portrait"
-      android:launchMode="singleTask"
-      android:taskAffinity=":lock"
       android:excludeFromRecents="true"
+      android:launchMode="singleTask"
+      android:screenOrientation="portrait"
       android:showWhenLocked="true"
-      />
+      android:taskAffinity=":lock"/>
+    <activity android:name=".MoveActivity">
+
+    </activity>
   </application>
 
 </manifest>

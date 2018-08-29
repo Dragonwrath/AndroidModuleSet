@@ -9,6 +9,10 @@ android {
 	defaultConfig {
 		applicationId "com.joker.lock"
 	}
+
+	lintOptions{
+		ignore("ClickableViewAccessibility")
+	}
 }
 
 dependencies {

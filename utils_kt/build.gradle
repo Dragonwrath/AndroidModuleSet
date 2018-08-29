@@ -1,0 +1,9 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply from:file(rootDir.path+"\\default.gradle")
+
+dependencies {
+	compileOnly rootProject.ext.v7
+	compileOnly rootProject.ext.design
+	compileOnly rootProject.ext.kotlin8
+}
