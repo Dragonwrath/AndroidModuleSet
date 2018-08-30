@@ -35,9 +35,7 @@
       android:screenOrientation="portrait"
       android:showWhenLocked="true"
       android:taskAffinity=":lock"/>
-    <activity android:name=".MoveActivity">
 
-    </activity>
   </application>
 
 </manifest>

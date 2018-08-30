@@ -1,9 +1,7 @@
 package com.joker.notification;
 import android.content.Context;
-import android.support.annotation.ColorInt;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.text.TextUtils;
 import android.widget.RemoteViews;
 public class ProgressNotificationFactory{
 

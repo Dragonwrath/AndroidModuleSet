@@ -16,3 +16,5 @@ dependencies {
 	implementation rootProject.ext.kotlin8
 }
 
+
+apply plugin: 'kotlin-android-extensions'

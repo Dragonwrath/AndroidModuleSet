@@ -1,67 +1,57 @@
 package com.joker.main;
 
-import android.Manifest;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.app.job.JobWorkItem;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.TextureView;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.os.Process;
+import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 
-import com.joker.common.utils.dialog.TipsDialog;
 import com.joker.permissions.BasePermissionActivity;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import static android.app.job.JobInfo.TriggerContentUri.FLAG_NOTIFY_FOR_DESCENDANTS;
 
+@RequiresApi(24)
 public class MainActivity extends BasePermissionActivity{
 
-  public final static String TAG=MainActivity.class.getName();
-  private ListView list;
-  private ArrayList<String> strings;
-  private ArrayAdapter<String> adapter;
-  private ImageView image;
-  public String[] PERMISSIONS=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-  private TextureView mTextureView;
-  private EditText mEditText;
-  private RelativeLayout mRelativeLayout;
+ @Override
+ protected void onCreate(Bundle savedInstanceState){
+  super.onCreate(savedInstanceState);
+  setContentView(R.layout.activity_main);
+  allPermissionGranted();
+ }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState){
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+ @Override
+ protected void onActivityResult(int requestCode,int resultCode,Intent data){
+  super.onActivityResult(requestCode,resultCode,data);
+ }
+
+ @Override
+ public void allPermissionGranted(){
+  System.out.println("MainActivity.allPermissionGranted-----------"+Process.myUid()+"--------"+Process.myPid());
+  System.out.println(Thread.currentThread());
+
+  JobInfo.Builder builder=new JobInfo.Builder(1,new ComponentName(this,DiscoverService.class));
+  JobInfo jobInfo=builder
+    .addTriggerContentUri(new JobInfo.TriggerContentUri(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,FLAG_NOTIFY_FOR_DESCENDANTS))
+    .build();
+  Object object=getSystemService(Context.JOB_SCHEDULER_SERVICE);
+  if(object!=null&&object instanceof JobScheduler){
+   JobScheduler scheduler=(JobScheduler)object;
+   scheduler.schedule(jobInfo);
+   if(Build.VERSION.SDK_INT >= 26){
+    scheduler.enqueue(jobInfo,new JobWorkItem(new Intent()));
+   }
   }
+ }
 
-  @Override
-  protected void onActivityResult(int requestCode,int resultCode,Intent data){
-    super.onActivityResult(requestCode,resultCode,data);
-    if(resultCode==RESULT_OK){
-    }
-  }
+ @Override
+ public void somePermissionsDenied(){
 
-
-  public void pick(View view){
-  }
-
-  public void request(View view){
-  }
-
-  @Override
-  public void allPermissionGranted(){
-    Toast.makeText(this,"All permissions has granted",Toast.LENGTH_SHORT).show();
-  }
-
-  @Override
-  public void somePermissionsDenied(){
-    Toast.makeText(this,"All permissions has denied",Toast.LENGTH_SHORT).show();
-  }
+ }
 }
