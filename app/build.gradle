@@ -6,6 +6,7 @@ apply from:file(rootDir.path +"\\test.gradle")
 android {
 	defaultConfig {
 		minSdkVersion 24
+		targetSdkVersion 28
 		applicationId "com.joker.main"
 		versionCode 1
 		versionName "1.0"

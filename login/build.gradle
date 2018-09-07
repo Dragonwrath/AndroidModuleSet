@@ -4,5 +4,7 @@ apply from: file(rootDir.path+"\\default.gradle")
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation rootProject.ext.v7
+	implementation rootProject.ext.vectorDrawable
+	implementation rootProject.ext.animatedVectorDrawable
 	implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
 }
