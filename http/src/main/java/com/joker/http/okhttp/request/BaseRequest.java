@@ -46,9 +46,7 @@ abstract class BaseRequest<Builder extends BaseRequest> implements RequestBuilde
   }
   final HashMap<String,String> headers=HttpConfig.getHeaders();
   if(headers.size()>0){
-   for(String key : headers.keySet()) {
-    builder.add(key,headers.get(key));
-   }
+   builder.addAll(Headers.of(headers));
   }
   return builder.build();
  }

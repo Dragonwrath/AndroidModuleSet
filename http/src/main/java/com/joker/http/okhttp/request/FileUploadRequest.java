@@ -1,4 +1,5 @@
 package com.joker.http.okhttp.request;
+import com.joker.http.core.header.HeadersConstant;
 import com.joker.http.core.utils.PreConditions;
 
 import java.io.File;
@@ -6,9 +7,10 @@ import java.net.FileNameMap;
 import java.net.URLConnection;
 
 import okhttp3.MediaType;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class FilePostRequest extends PostRequest<File>{
+public class FileUploadRequest extends PostRequest<File>{
  private static MediaType MEDIA_TYPE_STREAM = MediaType.parse("application/octet-stream");
 
  @Override
@@ -21,8 +23,11 @@ public class FilePostRequest extends PostRequest<File>{
 
  @Override
  RequestBody getBody(){
+  MediaType mediaType=translateToType(value.getName());
+  System.out.println(mediaType);
+  addHead(HeadersConstant.HEAD_KEY_ACCEPT,mediaType.toString());
   addHead("Content-length",String.valueOf(value.length()));
-  return RequestBody.create(translateToType(value.getName()),value);
+  return new ProgressRequestBody(mediaType,value);
  }
 
  @Override

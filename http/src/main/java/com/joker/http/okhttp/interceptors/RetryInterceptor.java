@@ -8,6 +8,9 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * 自定义Interceptor权重最高
+ */
 public class RetryInterceptor implements Interceptor{
 
  @Override

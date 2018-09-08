@@ -13,6 +13,7 @@ dependencies {
 	compileOnly rootProject.ext.v7
 	compileOnly rootProject.ext.recyclerView
 	compileOnly rootProject.ext.constraint
+	compileOnly rootProject.ext.glide4
 	implementation rootProject.ext.kotlin8
 }
 

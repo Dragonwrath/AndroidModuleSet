@@ -1,4 +1,4 @@
-package com.joker.common.utils;
+package com.joker.common.utils.uri;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

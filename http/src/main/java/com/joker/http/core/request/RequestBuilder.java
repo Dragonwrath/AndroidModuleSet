@@ -11,7 +11,7 @@ public interface RequestBuilder<Request,Builder extends RequestBuilder>{
  Builder url(String url) throws IllegalArgumentException;
 
  /**
-  * 添加相应的Head
+  * 添加相应的Head,需要注意的是，只支持UTF-8编码
   * @param key head的key
   * @param value head的value
   * @return 返回创建者对象
@@ -20,7 +20,7 @@ public interface RequestBuilder<Request,Builder extends RequestBuilder>{
  Builder addHead(String key,String value) throws IllegalArgumentException;
 
  /**
-  * 添加相应的参数，可能在某些请求中未使用
+  * 添加相应的参数，可能在某些请求中未使用，key只支持UTF-8编码，value推荐编码
   * @param key params的key
   * @param value params的value
   * @return 返回创建者对象

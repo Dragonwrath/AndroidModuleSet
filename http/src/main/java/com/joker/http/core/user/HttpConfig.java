@@ -29,18 +29,17 @@ public final class HttpConfig{
 
   @Override
   public void onTokenChanged(String newToken){
-
   }
 
   @Override
   public void onTokenError(){
-
   }
  };
 
  private HashMap<String,String> headers=new HashMap<>();
 
  private HttpConfig(){
+  headers.put("Accept-Language","zh-CN,zh;q=0.8");
  }
 
  private final static class Holder{

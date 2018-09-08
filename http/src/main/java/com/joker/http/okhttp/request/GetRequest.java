@@ -31,7 +31,7 @@ public class GetRequest extends BaseRequest<GetRequest>{
  @Override
  public Request build(){
   StringBuilder sBuilder=new StringBuilder();
-  if(map.size()>0){
+  if(map!=null&&map.size()>0){
    Set<String> set=map.keySet();
    String[] kSet=new String[set.size()];
    set.toArray(kSet);
