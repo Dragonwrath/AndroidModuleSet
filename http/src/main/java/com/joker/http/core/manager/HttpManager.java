@@ -7,5 +7,4 @@ public interface HttpManager<Request,Response>{
 
  void enqueue(Request request,ResponseCallback<Response> callback);
 
- void enqueue(Request request,ProgressCallback<Response> callback);
 }

@@ -42,7 +42,6 @@ public class OkHttpManagerImpl implements HttpManager<Request,Response>{
   });
  }
 
- @Override
  public void enqueue(Request request,final ProgressCallback<Response> callback){
   OkHttpClient client=mClientRef.get();
   client.newCall(request).enqueue(new Callback(){

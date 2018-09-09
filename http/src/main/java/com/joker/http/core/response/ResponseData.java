@@ -2,7 +2,9 @@ package com.joker.http.core.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseData<T>{
+import java.io.Serializable;
+
+public class ResponseData<T> implements Serializable{
  @SerializedName(value = "code",alternate={"resultCode"})
  private final String code;
  private final String msg;

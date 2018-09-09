@@ -1,9 +1,5 @@
 package com.joker.http.core.manager;
 
-public interface ProgressCallback<Response>{
+public interface ProgressCallback<Response> extends ResponseCallback<Response>{
  void onProgress(Response response,double progress);
-
- void onSuccess(Response response);
-
- void onFailure(Throwable throwable);
 }

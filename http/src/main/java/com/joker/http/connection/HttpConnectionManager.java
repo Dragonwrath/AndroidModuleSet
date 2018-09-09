@@ -1,8 +1,16 @@
 package com.joker.http.connection;
 import com.joker.http.connection.request.BaseRequest;
+import com.joker.http.connection.request.FilePostRequest;
+import com.joker.http.connection.request.GetRequest;
+import com.joker.http.connection.request.JsonPostRequest;
 import com.joker.http.connection.request.Request;
+import com.joker.http.connection.runnable.GetRequestRunnable;
 import com.joker.http.core.manager.HttpManager;
 import com.joker.http.core.header.HttpConfig;
+import com.joker.http.core.manager.ProgressCallback;
+import com.joker.http.core.manager.ResponseCallback;
+import com.joker.http.core.response.ResponseData;
+import com.joker.http.okhttp.request.PostRequest;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +24,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -31,7 +42,11 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.internal.Util;
 import okio.ByteString;
 
-public abstract class HttpConnectionManager implements HttpManager{
+public class HttpConnectionManager<T> implements HttpManager<Request,ResponseData<T>>{
+ private final static ExecutorService service =Executors.newFixedThreadPool(5);
+
+ public HttpConnectionManager(){
+ }
 
  public static  <T> void connection(Request<T> request) throws IOException{
   HttpURLConnection connection;
@@ -163,6 +178,27 @@ public abstract class HttpConnectionManager implements HttpManager{
    builder.append(new String(cache,0,len,"utf-8"));
   }
   System.out.println(builder.toString());
+ }
+
+ @Override public ResponseData<T> enqueue(Request request) throws IOException{
+
+  return null;
+ }
+
+ @Override public void enqueue(Request request,ResponseCallback<ResponseData<T>> callback){
+  String method=request.method();
+  switch(method) {
+   case "GET":
+    service.submit(new GetRequestRunnable<>(((GetRequest)request),callback));
+    break;
+   case "POST":
+    if(request instanceof FilePostRequest) {
+
+    } else if(request instanceof JsonPostRequest) {
+
+    }
+    break;
+  }
  }
 
 }

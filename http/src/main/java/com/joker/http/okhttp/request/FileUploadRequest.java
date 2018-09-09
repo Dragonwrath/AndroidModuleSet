@@ -25,7 +25,6 @@ public class FileUploadRequest extends PostRequest<File>{
  @Override
  RequestBody getBody(){
   MediaType mediaType=translateToType(value.getName());
-  System.out.println(mediaType);
   addHead(HeadersConstant.HEAD_KEY_ACCEPT,mediaType.toString());
   addHead("Content-length",String.valueOf(value.length()));
   return new ProgressRequestBody(mediaType,value);
