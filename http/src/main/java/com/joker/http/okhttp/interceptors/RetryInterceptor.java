@@ -1,9 +1,8 @@
 package com.joker.http.okhttp.interceptors;
-import com.joker.http.core.user.HttpConfig;
+import com.joker.http.core.header.HttpConfig;
 
 import java.io.IOException;
 
-import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;

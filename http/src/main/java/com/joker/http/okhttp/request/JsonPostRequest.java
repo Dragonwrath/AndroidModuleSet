@@ -1,12 +1,14 @@
 package com.joker.http.okhttp.request;
 
+import android.support.annotation.NonNull;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 public class JsonPostRequest extends PostRequest<String>{
  private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json;charset=utf-8");
 
  @Override
- public PostRequest addBody(String key,Object value){
+ public PostRequest addBody(String key,@NonNull Object value){
   //nothing
   return this;
  }

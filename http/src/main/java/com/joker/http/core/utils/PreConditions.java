@@ -6,8 +6,9 @@ public class PreConditions{
   throw new AssertionError("This class can not be instantiated!");
  }
 
- public static void requireStringNotNull(String args,String message){
+ public static String requireStringNotNull(String args,String message){
   if(args==null||args.length()==0||args.trim().length()==0) throw new IllegalArgumentException(message);
+  return args.trim();
  }
 
  public static void requestObjectNotNull(Object object,String message){

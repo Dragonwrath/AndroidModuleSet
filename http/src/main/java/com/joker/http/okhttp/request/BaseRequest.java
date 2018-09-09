@@ -1,6 +1,8 @@
 package com.joker.http.okhttp.request;
+import android.support.annotation.NonNull;
+
 import com.joker.http.core.request.RequestBuilder;
-import com.joker.http.core.user.HttpConfig;
+import com.joker.http.core.header.HttpConfig;
 import com.joker.http.core.utils.HttpUtils;
 import com.joker.http.core.utils.PreConditions;
 
@@ -27,7 +29,7 @@ abstract class BaseRequest<Builder extends BaseRequest> implements RequestBuilde
  }
 
  @Override
- public Builder addHead(String key,String value) throws IllegalArgumentException{
+ public Builder addHead(@NonNull String key,@NonNull String value) throws IllegalArgumentException{
   PreConditions.requireStringNotNull(key,"head's key is null or empty");
   PreConditions.requireStringNotNull(value,"head's value is null or empty");
   if(headers==null){

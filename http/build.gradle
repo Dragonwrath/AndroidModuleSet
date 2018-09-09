@@ -10,6 +10,7 @@ dependencies {
 	implementation rootProject.ext.retrofit2Converters
 	implementation rootProject.ext.retrofit2Adapters
 	implementation rootProject.ext.gson
+	implementation rootProject.ext.annotations
 	implementation rootProject.ext.kotlin8
 
 	//for test

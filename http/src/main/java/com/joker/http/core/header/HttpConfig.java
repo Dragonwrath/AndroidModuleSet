@@ -1,4 +1,5 @@
-package com.joker.http.core.user;
+package com.joker.http.core.header;
+import com.joker.http.core.user.UserTokenListener;
 import com.joker.http.core.utils.PreConditions;
 
 import java.util.HashMap;
@@ -76,6 +77,8 @@ public final class HttpConfig{
   public Builder(){
    config=new HttpConfig();
    config.headers=new LinkedHashMap<>();
+   config.headers.put(HeadersConstant.HEAD_KEY_ACCEPT_ENCODING,HeadersConstant.HEAD_VALUE_ACCEPT_ENCODING);
+   config.headers.put(HeadersConstant.HEAD_KEY_CONNECTION,HeadersConstant.HEAD_VALUE_CONNECTION_KEEP_ALIVE);
   }
 
   public Builder retryCount(int count){

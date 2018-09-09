@@ -1,4 +1,6 @@
 package com.joker.http.okhttp.request;
+import android.support.annotation.NonNull;
+
 import com.joker.http.core.header.HeadersConstant;
 import com.joker.http.core.utils.PreConditions;
 
@@ -7,7 +9,6 @@ import java.net.FileNameMap;
 import java.net.URLConnection;
 
 import okhttp3.MediaType;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class FileUploadRequest extends PostRequest<File>{
@@ -31,7 +32,7 @@ public class FileUploadRequest extends PostRequest<File>{
  }
 
  @Override
- public PostRequest addBody(String key,Object value){
+ public PostRequest addBody(String key,@NonNull Object value){
   //nothing
   return this;
  }

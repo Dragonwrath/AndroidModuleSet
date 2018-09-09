@@ -1,5 +1,7 @@
 package com.joker.http.okhttp.request;
 
+import android.support.annotation.NonNull;
+
 import com.joker.http.core.utils.PreConditions;
 
 import java.io.UnsupportedEncodingException;
@@ -14,7 +16,7 @@ public class GetRequest extends BaseRequest<GetRequest>{
  private LinkedHashMap<String,String> map;
 
  @Override
- public GetRequest addBody(String key,Object value) throws IllegalArgumentException{
+ public GetRequest addBody(String key,@NonNull Object value) throws IllegalArgumentException{
   PreConditions.requireStringNotNull(key,"param's key is null or empty");
   PreConditions.requestObjectNotNull(value,"value could not be null");
   if(map==null){

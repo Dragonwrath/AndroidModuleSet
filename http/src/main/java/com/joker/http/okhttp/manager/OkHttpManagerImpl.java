@@ -3,7 +3,7 @@ package com.joker.http.okhttp.manager;
 import com.joker.http.core.manager.HttpManager;
 import com.joker.http.core.manager.ProgressCallback;
 import com.joker.http.core.manager.ResponseCallback;
-import com.joker.http.core.user.HttpConfig;
+import com.joker.http.core.header.HttpConfig;
 import com.joker.http.okhttp.interceptors.RetryInterceptor;
 import com.joker.http.okhttp.interceptors.TokenInterceptor;
 

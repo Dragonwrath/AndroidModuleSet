@@ -1,5 +1,8 @@
 package com.joker.http.core.request;
 
+import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
+
 public interface RequestBuilder<Request,Builder extends RequestBuilder>{
 
  /**
@@ -17,7 +20,7 @@ public interface RequestBuilder<Request,Builder extends RequestBuilder>{
   * @return 返回创建者对象
   * @exception IllegalArgumentException 检查key是否为空，value是否为空
   */
- Builder addHead(String key,String value) throws IllegalArgumentException;
+ Builder addHead(@NonNull String key,@NonNull String value) throws IllegalArgumentException;
 
  /**
   * 添加相应的参数，可能在某些请求中未使用，key只支持UTF-8编码，value推荐编码
@@ -26,7 +29,7 @@ public interface RequestBuilder<Request,Builder extends RequestBuilder>{
   * @return 返回创建者对象
   * @exception IllegalArgumentException 检查key是否为空，value是否为空
   */
- Builder addBody(String key,Object value) throws IllegalArgumentException;
+ Builder addBody(@Nullable String key,@NonNull Object value) throws IllegalArgumentException;
 
  /**
   * 构建对应的Request对象，依赖相应的网络框架进行封装

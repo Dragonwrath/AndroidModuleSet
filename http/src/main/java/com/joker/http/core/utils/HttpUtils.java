@@ -8,7 +8,7 @@ public class HttpUtils{
  public static String verifyUrl(String url){
   PreConditions.requireStringNotNull(url,"url is null or empty");
   String urlTrimmed=url.trim();
-  if(!urlTrimmed.matches("^http.*[a-zA-Z]$")) throw new IllegalArgumentException("url is not validate url");
+  if(!urlTrimmed.matches("^http.*\\w$")) throw new IllegalArgumentException("url is not validate url");
   return urlTrimmed;
  }
 
