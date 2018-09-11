@@ -22,7 +22,7 @@ public class GetRequest<T> extends BaseRequest<T>{
   }
 
   @Override
-  public Builder addBody(
+  public Builder addParams(
     @Nullable String key,@NonNull Object value) throws IllegalArgumentException{
    if(!(value instanceof String)){
     throw new IllegalArgumentException("just support String");
@@ -34,7 +34,7 @@ public class GetRequest<T> extends BaseRequest<T>{
    }catch(UnsupportedEncodingException e){
     throw new IllegalArgumentException("not support encoding");
    }
-   return super.addBody(key,trueValue);
+   return super.addParams(key,trueValue);
   }
 
   @Override

@@ -29,7 +29,7 @@ public interface RequestBuilder<Request,Builder extends RequestBuilder>{
   * @return 返回创建者对象
   * @exception IllegalArgumentException 检查key是否为空，value是否为空
   */
- Builder addBody(@Nullable String key,@NonNull Object value) throws IllegalArgumentException;
+ Builder addParams(@Nullable String key,@NonNull Object value) throws IllegalArgumentException;
 
  /**
   * 构建对应的Request对象，依赖相应的网络框架进行封装

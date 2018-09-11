@@ -16,7 +16,7 @@ public class GetRequest extends BaseRequest<GetRequest>{
  private LinkedHashMap<String,String> map;
 
  @Override
- public GetRequest addBody(String key,@NonNull Object value) throws IllegalArgumentException{
+ public GetRequest addParams(String key,@NonNull Object value) throws IllegalArgumentException{
   PreConditions.requireStringNotNull(key,"param's key is null or empty");
   PreConditions.requestObjectNotNull(value,"value could not be null");
   if(map==null){

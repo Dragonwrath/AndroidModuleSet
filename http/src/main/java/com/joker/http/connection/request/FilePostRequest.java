@@ -22,7 +22,7 @@ public class FilePostRequest extends BaseRequest<File>{
    addHead(HeadersConstant.HEAD_KEY_CONTENT_TYPE,"application/octet-stream");
   }
 
-  @Override public Builder addBody(
+  @Override public Builder addParams(
     @Nullable String key,@NonNull Object value) throws IllegalArgumentException{
    PreConditions.requestObjectNotNull(value,"file can not be null");
    File file;
@@ -35,7 +35,7 @@ public class FilePostRequest extends BaseRequest<File>{
    }
    if(!file.exists()) throw new IllegalArgumentException("file not exist");
    translateToType(file.getName());
-   return super.addBody(EMPTY_KEY,value);
+   return super.addParams(EMPTY_KEY,value);
   }
 
   @Override public BaseRequest<File> build(){

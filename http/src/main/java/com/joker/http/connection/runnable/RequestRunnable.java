@@ -9,22 +9,28 @@ import com.joker.http.core.JsonHelper;
 import com.joker.http.core.header.HeadersConstant;
 import com.joker.http.core.header.HttpConfig;
 import com.joker.http.core.manager.ResponseCallback;
-import com.joker.http.core.response.ResponseData;
+import com.joker.http.core.manager.ResponseData;
 
-import java.io.BufferedReader;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
+import javax.security.auth.x500.X500Principal;
 
 abstract class RequestRunnable<T> implements Runnable{
 
@@ -48,8 +54,28 @@ abstract class RequestRunnable<T> implements Runnable{
    httpsURLConnection.setSSLSocketFactory((SSLSocketFactory)SSLSocketFactory.getDefault());
    httpsURLConnection.setHostnameVerifier(new HostnameVerifier(){
     @Override
-    public boolean verify(String s,SSLSession sslSession){
-     return true;
+    public boolean verify(String hostname,SSLSession sslSession){
+     try {
+      String peerHost = sslSession.getPeerHost(); //服务器返回的主机名
+      X509Certificate[] peerCertificates = (X509Certificate[]) sslSession
+        .getPeerCertificates();
+      for (X509Certificate certificate : peerCertificates) {
+       X500Principal subjectX500Principal = certificate
+         .getSubjectX500Principal();
+       String name = subjectX500Principal.getName();
+       String[] split = name.split(",");
+       for (String str : split) {
+        if (str.startsWith("CN")) {//证书绑定的域名或者ip
+         if (peerHost.equals(hostname)&&str.contains("客户端预埋的证书cn字段域名")) {
+          return true;
+         }
+        }
+       }
+      }
+     } catch (SSLPeerUnverifiedException e1) {
+      e1.printStackTrace();
+     }
+     return false;
     }
    });
   }
@@ -81,6 +107,8 @@ abstract class RequestRunnable<T> implements Runnable{
      System.out.println("string = "+string);
      if(string.contains("json")) {
       handleJsonInputStream(connection.getInputStream());
+     } else if(string.contains("application/vnd.android.package-archive")){
+      handleApkDownload(connection.getInputStream());
      }
     }
    } else if(code>=300&&code<400) {
@@ -89,13 +117,39 @@ abstract class RequestRunnable<T> implements Runnable{
 
    }
   } catch(Exception e) {
-   //todo rethrow
    callback.onFailure(e);
+  } finally{
+   connection.disconnect();
   }
  }
 
  private void handleJsonInputStream(InputStream inputStream) throws JsonParseException{
   callback.onSuccess(JsonHelper.deSerial(new JsonReader(new InputStreamReader(inputStream)),new TypeToken<ResponseData<T>>(){}));
+ }
+
+ private void handleApkDownload(InputStream inputStream) throws IOException {
+  BufferedOutputStream writer=null;
+  try{
+   System.out.println(new Date());
+  File apkFile=new File("D:\\ModuleSet\\AndroidModuleSet\\cache.apk");
+  if(!apkFile.exists()) {
+   if(!apkFile.createNewFile()){
+    throw new IOException("can't create file");
+   }
+  }
+  writer=new BufferedOutputStream(new FileOutputStream(apkFile));
+  int len;
+  byte[] cache=new byte[1024];
+  while((len=inputStream.read(cache))>0){
+   writer.write(cache,0,len);
+   writer.flush();
+  }
+   System.out.println(new Date());
+   callback.onSuccess((ResponseData<T>)new ResponseData<>(String.valueOf(200),connection.getResponseMessage(),apkFile));
+  } finally{
+   okhttp3.internal.Util.closeQuietly(writer);
+   okhttp3.internal.Util.closeQuietly(inputStream);
+  }
  }
 
 }

@@ -1,8 +1,8 @@
 package com.joker.http.okhttp.request;
 import android.support.annotation.NonNull;
 
-import com.joker.http.core.request.RequestBuilder;
 import com.joker.http.core.header.HttpConfig;
+import com.joker.http.core.request.RequestBuilder;
 import com.joker.http.core.utils.HttpUtils;
 import com.joker.http.core.utils.PreConditions;
 

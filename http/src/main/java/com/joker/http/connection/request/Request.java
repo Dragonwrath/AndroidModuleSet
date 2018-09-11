@@ -15,4 +15,5 @@ public interface Request<T>{
  @Nullable HashMap<String,String> headers();
 
  @Nullable HashMap<String,Object> bodies();
+
 }

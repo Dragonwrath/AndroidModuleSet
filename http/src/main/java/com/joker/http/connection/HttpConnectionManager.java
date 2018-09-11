@@ -7,10 +7,11 @@ import com.joker.http.connection.request.Request;
 import com.joker.http.connection.runnable.GetRequestRunnable;
 import com.joker.http.core.manager.HttpManager;
 import com.joker.http.core.header.HttpConfig;
-import com.joker.http.core.manager.ProgressCallback;
 import com.joker.http.core.manager.ResponseCallback;
-import com.joker.http.core.response.ResponseData;
-import com.joker.http.okhttp.request.PostRequest;
+import com.joker.http.core.manager.ResponseData;
+import com.joker.http.core.ssl.DefaultCustomHostnameVerifier;
+import com.joker.http.core.ssl.DefaultHostnameVerifier;
+import com.joker.http.core.ssl.DefaultTrustedSSLFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,12 +27,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -42,7 +39,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.internal.Util;
 import okio.ByteString;
 
-public class HttpConnectionManager<T> implements HttpManager<Request,ResponseData<T>>{
+public class HttpConnectionManager<T> implements HttpManager<Request>{
  private final static ExecutorService service =Executors.newFixedThreadPool(5);
 
  public HttpConnectionManager(){
@@ -54,19 +51,14 @@ public class HttpConnectionManager<T> implements HttpManager<Request,ResponseDat
   OutputStream out=null;
   try{
    String url=request.url();
-   if(url.startsWith("http")){
-    connection=(HttpURLConnection)new URL(url).openConnection();
-   }else{
+   if(url.startsWith("https")){
     connection=(HttpsURLConnection)new URL(url).openConnection();
     HttpsURLConnection httpsURLConnection=(HttpsURLConnection)connection;
     //todo update ssl
-    httpsURLConnection.setSSLSocketFactory((SSLSocketFactory)SSLSocketFactory.getDefault());
-    httpsURLConnection.setHostnameVerifier(new HostnameVerifier(){
-     @Override
-     public boolean verify(String s,SSLSession sslSession){
-      return true;
-     }
-    });
+//    httpsURLConnection.setSSLSocketFactory(DefaultTrustedSSLFactory.getDefaultSSLServerSocketFactory());
+    httpsURLConnection.setHostnameVerifier(new DefaultCustomHostnameVerifier());
+   } else {
+    connection=(HttpURLConnection)new URL(url).openConnection();
    }
    connection.setRequestMethod(request.method());
    connection.setConnectTimeout((int)HttpConfig.getConnectTimeOut());
@@ -180,12 +172,12 @@ public class HttpConnectionManager<T> implements HttpManager<Request,ResponseDat
   System.out.println(builder.toString());
  }
 
- @Override public ResponseData<T> enqueue(Request request) throws IOException{
+ public ResponseData<T> enqueue(Request request) throws IOException{
 
   return null;
  }
 
- @Override public void enqueue(Request request,ResponseCallback<ResponseData<T>> callback){
+ public void enqueue(Request request,ResponseCallback<ResponseData<T>> callback){
   String method=request.method();
   switch(method) {
    case "GET":
@@ -201,4 +193,12 @@ public class HttpConnectionManager<T> implements HttpManager<Request,ResponseDat
   }
  }
 
+ @Override
+ public <Response> void enqueue(Request request,Object tag,ResponseCallback<ResponseData<Response>> callback){
+
+ }
+
+ @Override public void cancel(Object tag){
+
+ }
 }

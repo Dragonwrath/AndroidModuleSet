@@ -2,7 +2,7 @@ package com.joker.http.connection.runnable;
 
 import com.joker.http.connection.request.GetRequest;
 import com.joker.http.core.manager.ResponseCallback;
-import com.joker.http.core.response.ResponseData;
+import com.joker.http.core.manager.ResponseData;
 
 public class GetRequestRunnable<T> extends RequestRunnable<T>{
 

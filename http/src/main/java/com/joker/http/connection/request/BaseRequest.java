@@ -3,15 +3,14 @@ package com.joker.http.connection.request;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.joker.http.core.request.RequestBuilder;
 import com.joker.http.core.header.HttpConfig;
+import com.joker.http.core.request.RequestBuilder;
 import com.joker.http.core.utils.HttpUtils;
 import com.joker.http.core.utils.PreConditions;
 
 import java.util.HashMap;
 
 import kotlin.NotImplementedError;
-import okio.DeflaterSink;
 
 public class BaseRequest<T> implements Request<T>{
  public final static String EMPTY_KEY="EMPTY_KEY";
@@ -68,7 +67,7 @@ public class BaseRequest<T> implements Request<T>{
   }
 
   @Override
-  public B addBody(@Nullable String key,@NonNull Object value) throws IllegalArgumentException{
+  public B addParams(@Nullable String key,@NonNull Object value) throws IllegalArgumentException{
    PreConditions.requestObjectNotNull(value,"value could not be null");
    if(key==null||key.length()==0){
     key=EMPTY_KEY;

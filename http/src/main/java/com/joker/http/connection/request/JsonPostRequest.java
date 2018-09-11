@@ -19,13 +19,13 @@ public class JsonPostRequest extends BaseRequest<String>{
    addHead("Content-Type","application/json; charset=UTF-8");
   }
 
-  @Override public Builder addBody(
+  @Override public Builder addParams(
     @Nullable String key,@NonNull Object value) throws IllegalArgumentException{
    if(!(value instanceof String)){
     throw new IllegalArgumentException("json request just support String");
    }
    String trueValue=PreConditions.requireStringNotNull(((String)value),"json may be is  null");
-   return super.addBody(key,trueValue);
+   return super.addParams(key,trueValue);
   }
 
   @Override public BaseRequest<String> build(){

@@ -8,7 +8,7 @@ public class JsonPostRequest extends PostRequest<String>{
  private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json;charset=utf-8");
 
  @Override
- public PostRequest addBody(String key,@NonNull Object value){
+ public PostRequest addParams(String key,@NonNull Object value){
   //nothing
   return this;
  }

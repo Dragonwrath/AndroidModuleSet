@@ -2,7 +2,8 @@ package com.joker.http.core.manager;
 
 import io.reactivex.Observable;
 
-public interface RxHttpManager<Request,Response>{
+public interface RxHttpManager{
+ <Request,Response> Observable<ResponseData<Response>> enqueue(Request request,Object tag);
 
- Observable<Response> enqueue(Request request);
+ void cancel(Object tag);
 }

@@ -40,7 +40,7 @@ public class ParamsPostRequest extends PostRequest<String>{
   * @return 返回创建者对象
   */
  @Override
- public PostRequest addBody(String key,@NonNull Object value) throws IllegalArgumentException{
+ public PostRequest addParams(String key,@NonNull Object value) throws IllegalArgumentException{
   PreConditions.requireStringNotNull(key,"param's key is null or empty");
   PreConditions.requestObjectNotNull(value,"value could not be null");
   List<Object> list=params.computeIfAbsent(key,new Function<String,List<Object>>(){

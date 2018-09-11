@@ -1,4 +1,4 @@
-package com.joker.http.core.response;
+package com.joker.http.core.manager;
 
 import com.google.gson.annotations.SerializedName;
 

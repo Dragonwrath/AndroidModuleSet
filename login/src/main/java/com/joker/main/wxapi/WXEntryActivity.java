@@ -30,7 +30,7 @@ import java.util.HashMap;
  *    android:launchMode="singleTop"/>
  * 3、根据项目集成的Bus以及对应的逻辑，集成之后的结果
  * 4、集成完成之后，直接调用下面的代码，
- * IWXAPI wxapi=WXAPIFactory.createWXAPI((Context)mView,Constant.WeChat.APP_ID,true);
+ * IWXAPI wxapi=WXAPIFactory.createWXAPI(context,Constant.WeChat.APP_ID,true);
  * if(wxapi.isWXAppInstalled()){  //可以给用户提示引导安装
  *  final SendAuth.Req req=new SendAuth.Req();
  *  req.scope="snsapi_userinfo";

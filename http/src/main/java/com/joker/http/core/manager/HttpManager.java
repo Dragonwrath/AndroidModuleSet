@@ -1,10 +1,9 @@
 package com.joker.http.core.manager;
 
-import java.io.IOException;
-public interface HttpManager<Request,Response>{
+public interface HttpManager<Request>{
 
- Response enqueue(Request request) throws IOException;
+ <Response> void enqueue(Request request,Object tag,ResponseCallback<ResponseData<Response>> callback);
 
- void enqueue(Request request,ResponseCallback<Response> callback);
+ void cancel(Object tag);
 
 }

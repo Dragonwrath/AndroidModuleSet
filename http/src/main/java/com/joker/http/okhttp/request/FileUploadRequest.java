@@ -31,7 +31,7 @@ public class FileUploadRequest extends PostRequest<File>{
  }
 
  @Override
- public PostRequest addBody(String key,@NonNull Object value){
+ public PostRequest addParams(String key,@NonNull Object value){
   //nothing
   return this;
  }
