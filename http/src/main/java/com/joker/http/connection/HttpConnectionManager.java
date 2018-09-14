@@ -53,6 +53,7 @@ public class HttpConnectionManager<T> implements HttpManager<Request>{
    String url=request.url();
    if(url.startsWith("https")){
     connection=(HttpsURLConnection)new URL(url).openConnection();
+
     HttpsURLConnection httpsURLConnection=(HttpsURLConnection)connection;
     //todo update ssl
 //    httpsURLConnection.setSSLSocketFactory(DefaultTrustedSSLFactory.getDefaultSSLServerSocketFactory());

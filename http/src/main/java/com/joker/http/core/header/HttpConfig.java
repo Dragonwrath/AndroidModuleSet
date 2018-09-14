@@ -4,6 +4,7 @@ import com.joker.http.core.utils.PreConditions;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.reactivex.annotations.NonNull;
 
@@ -23,17 +24,20 @@ public final class HttpConfig{
  private long connectTimeOut=20_000L;
 
  private UserTokenListener tokenListener=new UserTokenListener(){
+  private final AtomicReference<String> tokenHolder=new AtomicReference<>();
   @Override
   public String getUserToken(){
-   return null;
+   return tokenHolder!=null?(tokenHolder.get()):null;
   }
 
   @Override
   public void onTokenChanged(String newToken){
+   tokenHolder.compareAndSet(tokenHolder.get(),newToken);
   }
 
   @Override
   public void onTokenError(){
+   //todo hold some situations when token's verify failed;
   }
  };
 
