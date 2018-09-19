@@ -1,16 +1,19 @@
-package com.joker.main;
+package com.joker.main.core;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.joker.main.Constant;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.auth.AuthInfo;
 
-
+/**
+ * 第三方社会化工具初始化类
+ */
 public class SocialManager{
  private final Context context;
 
- SocialManager(Application context){
+ public SocialManager(Application context){
   this.context=context;
  }
 

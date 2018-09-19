@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_joker_main_KeyHouse_getWeChatAppId(JNIEnv *env, jclass clazz) {
-  return env->NewStringUTF("wx5cf62e28be5f7a73");
+  return env->NewStringUTF("wxd930ea5d5a258f4f");
 }
 
 /*
@@ -33,7 +33,7 @@ JNIEXPORT jstring JNICALL Java_com_joker_main_KeyHouse_getWeChatAppSecret
  */
 JNIEXPORT jstring JNICALL Java_com_joker_main_KeyHouse_getWeiboKey
     (JNIEnv *env, jclass clazz) {
-  return env->NewStringUTF("fasfa");
+  return env->NewStringUTF("1432934020");
 }
 
 #ifdef __cplusplus

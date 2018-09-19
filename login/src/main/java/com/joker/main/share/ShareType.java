@@ -4,4 +4,5 @@ public final class ShareType{
  public final static int IMAGE=1;
  public final static int VIDEO=2;
  public final static int WEB=3;
+ public final static int MULTI=4;
 }

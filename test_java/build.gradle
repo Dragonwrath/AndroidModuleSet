@@ -3,7 +3,11 @@ apply plugin: 'application'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'org.json:json:20180813'
+    implementation rootProject.ext.rxJava2
+    implementation rootProject.ext.okhttp3
+    implementation rootProject.ext.gson
+    implementation rootProject.ext.annotations
+    implementation rootProject.ext.kotlin8
 }
 
 sourceCompatibility = "1.8"

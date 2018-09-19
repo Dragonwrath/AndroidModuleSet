@@ -15,13 +15,13 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import java.lang.ref.WeakReference;
 import java.util.UUID;
 
-public class LoginMangerBridge{
+public class LoginManger{
 
  private final static class Holder{
   private final static ActivityLoginMsgBus INSTANCE=new ActivityLoginMsgBus();
  }
 
- private LoginMangerBridge(){
+ private LoginManger(){
   throw new AssertionError("This class can not be instantiated!");
  }
 
@@ -31,7 +31,7 @@ public class LoginMangerBridge{
    final SendAuth.Req req=new SendAuth.Req();
    req.scope="snsapi_userinfo";
    req.state=UUID.randomUUID().toString();
-   Holder.INSTANCE.init(activity,listener);
+   Holder.INSTANCE.register(activity,listener);
    wxapi.sendReq(req);
   }else{
    Toast.makeText(activity,"微信未安装",Toast.LENGTH_SHORT).show();
@@ -40,7 +40,7 @@ public class LoginMangerBridge{
 
  public static void weiBo(Activity activity,OnUserAuthResultListener listener){
   WbSdk.checkInit();
-  Holder.INSTANCE.init(activity,listener);
+  Holder.INSTANCE.register(activity,listener);
   activity.startActivity(new Intent(activity,WeiBoAuthActivity.class));
  }
 
@@ -55,21 +55,25 @@ public class LoginMangerBridge{
   private WeakReference<Activity> mActRef;
   private OnUserAuthResultListener mListener;
 
-  void init(Activity activity,OnUserAuthResultListener listener){
+  void register(Activity activity,OnUserAuthResultListener listener){
    mActRef=new WeakReference<>(activity);
    mListener=listener;
   }
 
   @Override public void onSuccess(final UserInfo info){
-   new Handler(mActRef.get().getMainLooper()).postDelayed(new Runnable(){
-    @Override public void run(){
-     mListener.onAuthSuccess(info);
-    }
-   },500);
+   Activity activity=mActRef.get();
+   if(activity!=null&&mListener!=null)
+    new Handler(activity.getMainLooper()).postDelayed(new Runnable(){
+     @Override public void run(){
+      mListener.onAuthSuccess(info);
+     }
+    },500);
 
   }
 
   @Override public void cancel(){
+   Activity activity=mActRef.get();
+   if(activity!=null&&mListener!=null)
    new Handler(mActRef.get().getMainLooper()).postDelayed(new Runnable(){
     @Override public void run(){
      mListener.onAuthCancel();
@@ -78,6 +82,8 @@ public class LoginMangerBridge{
   }
 
   @Override public void onFailure(final Throwable throwable){
+   Activity activity=mActRef.get();
+   if(activity!=null&&mListener!=null)
    new Handler(mActRef.get().getMainLooper()).postDelayed(new Runnable(){
     @Override public void run(){
      mListener.onAuthFailure(throwable);

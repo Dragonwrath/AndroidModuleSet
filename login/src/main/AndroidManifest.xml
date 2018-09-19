@@ -12,9 +12,9 @@
       android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
     <activity
       android:name=".weibo.WeiBoAuthActivity"
-      android:configChanges="orientation|screenSize|keyboardHidden">
+      android:configChanges="orientation|screenSize|keyboardHidden"/>
+    <activity android:name=".weibo.WeiBoShareActivity">
     </activity>
-
   </application>
 
 </manifest>

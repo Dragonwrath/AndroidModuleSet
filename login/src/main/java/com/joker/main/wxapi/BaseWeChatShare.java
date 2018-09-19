@@ -1,4 +1,4 @@
-package com.joker.main.share.wx;
+package com.joker.main.wxapi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,6 +52,7 @@ abstract class BaseWeChatShare implements Share{
   if(TextUtils.isEmpty(bean.getMessage())){
    throw new IllegalArgumentException("can't support send empty message to WeChat");
   }
+  //todo check are args
   String text=bean.getMessage();
   WXTextObject textObj=new WXTextObject();
   textObj.text=text;
@@ -71,6 +72,7 @@ abstract class BaseWeChatShare implements Share{
  public void sendImage(ImageShareBean bean) throws IllegalArgumentException{
   File file=bean.getFile();
   //todo should to compress
+  //todo check are args
   if(file==null||!file.exists()||file.length()>10*1024*1024||!file.canRead()){
    throw new IllegalArgumentException("file not exist or file is too large or couldn't to read");
   }
@@ -90,6 +92,7 @@ abstract class BaseWeChatShare implements Share{
  public void sendVideo(VideoShareBean bean) throws IllegalArgumentException{
   Bitmap bmp=null;
   Bitmap thumbBmp=null;
+  //todo check are args
   try{
    WXVideoObject video=new WXVideoObject();
    video.videoUrl=bean.getUrl();

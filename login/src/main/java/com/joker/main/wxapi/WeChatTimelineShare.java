@@ -1,4 +1,4 @@
-package com.joker.main.share.wx;
+package com.joker.main.wxapi;
 import android.content.Context;
 
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
