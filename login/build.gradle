@@ -1,10 +1,31 @@
 apply plugin: 'com.android.library'
-apply from: file(rootDir.path+"\\default.gradle")
+apply from: file(rootDir.path + "\\default.gradle")
+
+android {
+	defaultConfig {
+
+		ndk {
+			moduleName "share_key"
+			abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+		}
+	}
+
+	externalNativeBuild {
+		cmake {
+			path "CMakeLists.txt"
+		}
+	}
+}
 
 dependencies {
-	implementation fileTree(dir: 'libs', include: ['*.jar'])
-	implementation rootProject.ext.v7
-	implementation rootProject.ext.vectorDrawable
-	implementation rootProject.ext.animatedVectorDrawable
+	implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+	compileOnly rootProject.ext.constraint
+	compileOnly rootProject.ext.v7
+	compileOnly rootProject.ext.vectorDrawable
+	compileOnly rootProject.ext.animatedVectorDrawable
+	//wechat
 	implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
+	//weiBo
+//	implementation 'com.sina.weiBo.sdk:core:4.3.1:openDefaultRelease@aar'
+
 }

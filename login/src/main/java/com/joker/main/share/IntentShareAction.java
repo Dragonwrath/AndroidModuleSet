@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import java.lang.ref.WeakReference;
 
 import com.joker.main.share.bean.ImageShareBean;
+import com.joker.main.share.bean.MultiObjectShareBean;
 import com.joker.main.share.bean.TextShareBean;
 import com.joker.main.share.bean.VideoShareBean;
 import com.joker.main.share.bean.WebShareBean;
@@ -21,7 +22,7 @@ import com.joker.main.share.bean.WebShareBean;
  * 对应的Type类型，参考下面的方法，另外需要记住的是最好进行相应的参数校验
  * 比如，文件大小，文件名称的长度等等
  */
-public class IntentShareAction implements ShareAction{
+public class IntentShareAction implements Share{
  private WeakReference<Activity> mActRef;
  private WeakReference<Fragment> mFrgRef;
 
@@ -92,6 +93,10 @@ public class IntentShareAction implements ShareAction{
   shareIntent.putExtra(Intent.EXTRA_STREAM,uriToImage);
   shareIntent.setType("video/*");
   startActivityProxy(shareIntent);
+ }
+
+ @Override public void sendMultiObject(MultiObjectShareBean bean) throws IllegalArgumentException{
+  //not support yet
  }
 
  private void startActivityProxy(Intent intent){

@@ -1,9 +1,9 @@
-apply plugin: 'java'
-apply plugin: 'kotlin'
-apply plugin: 'application'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply from:file(rootDir.path+"\\default.gradle")
 
 dependencies {
-	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
 	implementation rootProject.ext.rxJava2
 	implementation rootProject.ext.okhttp3
 	implementation rootProject.ext.retrofit2
@@ -12,13 +12,13 @@ dependencies {
 	implementation rootProject.ext.gson
 	implementation rootProject.ext.annotations
 	implementation rootProject.ext.kotlin8
-
 	//for test
 	testImplementation 'junit:junit:4.12'
 }
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
+
 buildscript {
 	ext.kotlin_version = '1.2.61'
 	repositories {
@@ -29,17 +29,13 @@ buildscript {
 	}
 }
 
-compileKotlin {
-	kotlinOptions {
-		jvmTarget = "1.8"
-	}
-}
-compileTestKotlin {
-	kotlinOptions {
-		jvmTarget = "1.8"
-	}
-}
-
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
+}
+
+android {
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
 }

@@ -3,7 +3,8 @@ package com.joker.main.share.wx;
 import android.content.Context;
 
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-public class WeChatSessionShare extends BaseWeChatShareAction{
+
+public class WeChatSessionShare extends BaseWeChatShare{
 
  public WeChatSessionShare(Context context){
   super(context);
@@ -13,4 +14,5 @@ public class WeChatSessionShare extends BaseWeChatShareAction{
  int getScene(){
   return SendMessageToWX.Req.WXSceneSession;
  }
+
 }

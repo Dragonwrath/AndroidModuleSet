@@ -30,7 +30,6 @@ public class BaseRequest<T> implements Request<T>{
  @NonNull
  @Override
  public String url(){
-  PreConditions.requireStringNotNull(url,"Url can't be null or empty");
   return url;
  }
 

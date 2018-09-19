@@ -1,6 +1,8 @@
 package com.joker.main.share.bean;
+
 import com.joker.main.share.ShareBean;
 import com.joker.main.share.ShareType;
+
 public class TextShareBean implements ShareBean{
 
  private final String title;

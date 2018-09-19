@@ -5,6 +5,7 @@ import com.joker.http.connection.request.GetRequest;
 import com.joker.http.connection.request.JsonPostRequest;
 import com.joker.http.connection.request.Request;
 import com.joker.http.connection.runnable.GetRequestRunnable;
+import com.joker.http.connection.runnable.JsonPostRequestRunnable;
 import com.joker.http.core.manager.HttpManager;
 import com.joker.http.core.header.HttpConfig;
 import com.joker.http.core.manager.ResponseCallback;
@@ -67,12 +68,15 @@ public class HttpConnectionManager<T> implements HttpManager<Request>{
    connection.setDoInput(true);
    connection.setDoOutput(true);
    HashMap<String,String> map=request.headers();
-   for(String key : map.keySet()) {
-    connection.setRequestProperty(key,map.get(key));
+   if(map!=null){
+    for(String key : map.keySet()) {
+     connection.setRequestProperty(key,map.get(key));
+    }
    }
    out=connection.getOutputStream();
    final OutputStream mirrorOut= out;
-   Observable.just(request.bodies())
+   HashMap<String,Object> bodies=request.bodies();
+   Observable.just(bodies)
      .subscribeOn(Schedulers.io())
      .map(new Function<HashMap<String,Object>,Object>(){
       @Override
@@ -178,6 +182,7 @@ public class HttpConnectionManager<T> implements HttpManager<Request>{
   return null;
  }
 
+ @SuppressWarnings("unchecked")
  public void enqueue(Request request,ResponseCallback<ResponseData<T>> callback){
   String method=request.method();
   switch(method) {
@@ -188,7 +193,7 @@ public class HttpConnectionManager<T> implements HttpManager<Request>{
     if(request instanceof FilePostRequest) {
 
     } else if(request instanceof JsonPostRequest) {
-
+     service.submit(new JsonPostRequestRunnable(((JsonPostRequest)request),callback));
     }
     break;
   }

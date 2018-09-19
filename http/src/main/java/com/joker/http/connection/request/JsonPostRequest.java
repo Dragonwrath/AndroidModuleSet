@@ -17,6 +17,7 @@ public class JsonPostRequest extends BaseRequest<String>{
   public Builder(){
    request=new JsonPostRequest();
    addHead("Content-Type","application/json; charset=UTF-8");
+   addHead("Accept-Charset","utf-8");
   }
 
   @Override public Builder addParams(

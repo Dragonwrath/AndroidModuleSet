@@ -2,7 +2,9 @@ package com.joker.main.share.wx;
 import android.content.Context;
 
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-public class WeChatTimelineShare extends BaseWeChatShareAction{
+
+public class WeChatTimelineShare extends BaseWeChatShare{
+
  public WeChatTimelineShare(Context context){
   super(context);
  }
@@ -11,4 +13,5 @@ public class WeChatTimelineShare extends BaseWeChatShareAction{
  int getScene(){
   return SendMessageToWX.Req.WXSceneTimeline;
  }
+
 }

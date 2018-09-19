@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: file(rootDir.path + "\\default.gradle")
-apply from:file(rootDir.path +"\\test.gradle")
+apply from: file(rootDir.path + "\\test.gradle")
 android {
 	defaultConfig {
-		minSdkVersion 24
+		minSdkVersion 21
 		targetSdkVersion 28
 		applicationId "com.joker.main"
 		versionCode 1
 		versionName "1.0"
-		manifestPlaceholders = [PACKAGE_NANE  : applicationId]
+		manifestPlaceholders = [PACKAGE_NANE: applicationId]
 	}
 }
 

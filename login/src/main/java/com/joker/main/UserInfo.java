@@ -10,20 +10,13 @@ public class UserInfo implements Serializable{
   public final static int WECHAT=1;
   public final static int QQ=2;
   public final static int WEIBO=3;
-
  }
 
- private final String id;
- private final String name;
- private final int sex;
- private final String avatar;
-
- public UserInfo(String id,String name,int sex,String avatar){
-  this.id=id;
-  this.name=name;
-  this.sex=sex;
-  this.avatar=avatar;
- }
+ private String id;
+ private String name;
+ //女为0，男为1，默认为女
+ private int sex;
+ private String avatarUrl;
 
  public int getChannel(){
   return Channel.OFFICIAL;
@@ -33,26 +26,40 @@ public class UserInfo implements Serializable{
   return id;
  }
 
+ public void setId(String id){
+  this.id=id;
+ }
+
  public String getName(){
   return name;
+ }
+
+ public void setName(String name){
+  this.name=name;
  }
 
  public int getSex(){
   return sex;
  }
 
- public String getAvatar(){
-  return avatar;
+ public void setSex(int sex){
+  this.sex=sex;
+ }
+
+ public String getAvatarUrl(){
+  return avatarUrl;
+ }
+
+ public void setAvatarUrl(String avatarUrl){
+  this.avatarUrl=avatarUrl;
  }
 
  @Override
  public boolean equals(Object o){
   if(this==o) return true;
   if(o==null||getClass()!=o.getClass()) return false;
-
   UserInfo userInfo=(UserInfo)o;
-
-  return sex==userInfo.sex&&id.equals(userInfo.id)&&name.equals(userInfo.name)&&avatar.equals(userInfo.avatar);
+  return sex==userInfo.sex&&id.equals(userInfo.id)&&name.equals(userInfo.name)&&avatarUrl.equals(userInfo.avatarUrl);
  }
 
  @Override
@@ -60,7 +67,7 @@ public class UserInfo implements Serializable{
   int result=id.hashCode();
   result=31*result+name.hashCode();
   result=31*result+sex;
-  result=31*result+avatar.hashCode();
+  result=31*result+avatarUrl.hashCode();
   return result;
  }
 
@@ -70,7 +77,7 @@ public class UserInfo implements Serializable{
     "id='"+id+'\''+
     ", name='"+name+'\''+
     ", sex="+sex+
-    ", avatar='"+avatar+'\''+
+    ", avatarUrl='"+avatarUrl+'\''+
     '}';
  }
 }

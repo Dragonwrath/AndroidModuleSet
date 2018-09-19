@@ -5,6 +5,13 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.joker.main.Constant;
+import com.joker.main.share.Share;
+import com.joker.main.share.bean.ImageShareBean;
+import com.joker.main.share.bean.MultiObjectShareBean;
+import com.joker.main.share.bean.TextShareBean;
+import com.joker.main.share.bean.VideoShareBean;
+import com.joker.main.share.bean.WebShareBean;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -19,19 +26,12 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import com.joker.main.Constant;
-import com.joker.main.share.ShareAction;
-import com.joker.main.share.bean.ImageShareBean;
-import com.joker.main.share.bean.TextShareBean;
-import com.joker.main.share.bean.VideoShareBean;
-import com.joker.main.share.bean.WebShareBean;
-
 /***
  * 微信关于缩略图的限制大小为32768，30KB
  * 微信单张图片的大小不能超过10MB
  * 微信关于文件的名称长度不能超过1024
  */
-abstract class BaseWeChatShareAction implements ShareAction{
+abstract class BaseWeChatShare implements Share{
 
  private final static int THUMB_SIZE=150;
 
@@ -39,7 +39,7 @@ abstract class BaseWeChatShareAction implements ShareAction{
 
  private final WeakReference<Context> mContextReference;
 
- BaseWeChatShareAction(Context context){
+ BaseWeChatShare(Context context){
   mContextReference=new WeakReference<>(context);
   this.mWxApi=WXAPIFactory.createWXAPI(context,Constant.WeChat.APP_ID,true);
   mWxApi.registerApp(Constant.WeChat.APP_ID);
@@ -149,6 +149,10 @@ abstract class BaseWeChatShareAction implements ShareAction{
     System.gc();
    }
   }
+ }
+
+ @Override public void sendMultiObject(MultiObjectShareBean bean) throws IllegalArgumentException{
+  //not support
  }
 
  private String buildTransaction(final String type){

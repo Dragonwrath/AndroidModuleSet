@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.joker.main.Constant;
+import com.sina.weibo.sdk.net.HttpManager;
+import com.sina.weibo.sdk.net.WeiboParameters;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -124,9 +126,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     "appid="+Constant.WeChat.APP_ID+
     "&secret="+Constant.WeChat.APP_SECRET+
     "&code="+resp.code+"&grant_type=authorization_code";
-
   //todo query
-
   queryUserInfo(new HashMap<String,String>());
  }
 
@@ -140,7 +140,6 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     "access_token=" +accessToken +
     "&openid=" +openid;
   //todo query
-
   if(TextUtils.isEmpty(openid)||TextUtils.isEmpty(accessToken)) {
     throw new IllegalArgumentException("wechat sns/userinfo failure!! with wrong arguments "
       +" access_token=" +accessToken +
@@ -158,8 +157,12 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
    return;
   }
   //todo 用来统一微信、小程序登陆的unionId，建议保留
-  WxUserInfo info=new WxUserInfo(map.get("openid"),map.get("nickname"),
-    Integer.parseInt(map.get("sex")),map.get("headimgurl"),map.get("unionid"),map.get("openId"));
+  WxUserInfo info=new WxUserInfo();
+  info.setOpenId(map.get("openid"));
+  info.setName(map.get("nickname"));
+  info.setUnionId(map.get("unionid"));
+  info.setAvatarUrl(map.get("headimgurl"));
+  info.setSex(Integer.parseInt(map.get("sex")));
 
   //todo 无论什么结果，最终都会调用结束功能
   this.finish();
