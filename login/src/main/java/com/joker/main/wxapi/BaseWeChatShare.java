@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import com.joker.main.Constant;
 import com.joker.main.share.Share;
 import com.joker.main.share.bean.ImageShareBean;
-import com.joker.main.share.bean.MultiObjectShareBean;
+import com.joker.main.share.bean.MultiImageShareBean;
 import com.joker.main.share.bean.TextShareBean;
 import com.joker.main.share.bean.VideoShareBean;
 import com.joker.main.share.bean.WebShareBean;
@@ -49,11 +49,10 @@ abstract class BaseWeChatShare implements Share{
 
  @Override
  public void sendText(TextShareBean bean) throws IllegalArgumentException{
-  if(TextUtils.isEmpty(bean.getMessage())){
-   throw new IllegalArgumentException("can't support send empty message to WeChat");
-  }
-  //todo check are args
   String text=bean.getMessage();
+  if(TextUtils.isEmpty(bean.getMessage())||bean.getMessage().length()>10240){
+   throw new IllegalArgumentException("Not support message!!Message is null or empty, or more than 10240");
+  }
   WXTextObject textObj=new WXTextObject();
   textObj.text=text;
   WXMediaMessage msg=new WXMediaMessage();
@@ -64,17 +63,30 @@ abstract class BaseWeChatShare implements Share{
   req.transaction=buildTransaction("text");
   req.message=msg;
   req.scene=getScene();
-
   mWxApi.sendReq(req);
  }
 
+ /**
+  * 因为图片的必须使用本地的进行分享，因此需要用到FileUri
+  * 其中还需要区分，api25以上版本的FileProvider的问题
+  * 此外，微信对于分享的图片的大小有限制，图片不能超过10M，
+  * 文件名的长度不能超过1024，这些最好做校验，
+  *
+  * <strong>特别强调一点，如果这个file为内部存储空间的文件，应该将其保存到外部存储</strong>
+  * 再分享，因为，第三方无法访问相应的数据源
+  *
+  * {@link com.tencent.mm.opensdk.modelmsg.WXImageObject}
+  */
  @Override
  public void sendImage(ImageShareBean bean) throws IllegalArgumentException{
-  File file=bean.getFile();
+  File file=new File(bean.getPath());
   //todo should to compress
   //todo check are args
   if(file==null||!file.exists()||file.length()>10*1024*1024||!file.canRead()){
    throw new IllegalArgumentException("file not exist or file is too large or couldn't to read");
+  }
+  if(verifyFileIsInternal(file.getAbsolutePath())) {
+   throw new IllegalArgumentException("file couldn't be internal file");
   }
   WXImageObject imgObj=new WXImageObject();
   imgObj.imagePath=file.getAbsolutePath();
@@ -88,6 +100,11 @@ abstract class BaseWeChatShare implements Share{
   mWxApi.sendReq(req);
  }
 
+ /**
+  * 由于音频与视频都是相似的，因此，我们直接分享相应的文件即可
+  * 所以，需要首先保存文件到本地，之后再进行相应的分享
+  * 缩略图的大小必须小于32KB
+  */
  @Override
  public void sendVideo(VideoShareBean bean) throws IllegalArgumentException{
   Bitmap bmp=null;
@@ -154,7 +171,7 @@ abstract class BaseWeChatShare implements Share{
   }
  }
 
- @Override public void sendMultiObject(MultiObjectShareBean bean) throws IllegalArgumentException{
+ @Override public void sendMultiObject(MultiImageShareBean bean) throws IllegalArgumentException{
   //not support
  }
 
@@ -190,5 +207,14 @@ abstract class BaseWeChatShare implements Share{
    }
   }
   return output.toByteArray();
+ }
+
+ private boolean verifyFileIsInternal(String path) {
+  Context context=mContextReference.get();
+  if(context==null||TextUtils.isEmpty(path)) {
+   return true;
+  }
+  String internal=context.getFilesDir().getAbsolutePath();
+  return path.startsWith(internal);
  }
 }

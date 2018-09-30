@@ -7,13 +7,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import java.lang.ref.WeakReference;
-
 import com.joker.main.share.bean.ImageShareBean;
-import com.joker.main.share.bean.MultiObjectShareBean;
+import com.joker.main.share.bean.MultiImageShareBean;
 import com.joker.main.share.bean.TextShareBean;
 import com.joker.main.share.bean.VideoShareBean;
 import com.joker.main.share.bean.WebShareBean;
+
+import java.lang.ref.WeakReference;
 
 /**
  * 原生的Intent分享只支持特定的几种类型，
@@ -58,7 +58,7 @@ public class IntentShareAction implements Share{
   long realId=0L;
   try{
    cursor=mActRef.get().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-     new String[]{MediaStore.Images.Media._ID},MediaStore.Images.Media.DATA+" like \"%"+bean.getFile().getName()+"\"" ,null,null);
+     new String[]{MediaStore.Images.Media._ID},MediaStore.Images.Media.DATA+" like \"%"+bean.getPath()+"\"" ,null,null);
    if(cursor!=null&&cursor.moveToFirst()){
     realId=cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
    }
@@ -95,7 +95,7 @@ public class IntentShareAction implements Share{
   startActivityProxy(shareIntent);
  }
 
- @Override public void sendMultiObject(MultiObjectShareBean bean) throws IllegalArgumentException{
+ @Override public void sendMultiObject(MultiImageShareBean bean) throws IllegalArgumentException{
   //not support yet
  }
 

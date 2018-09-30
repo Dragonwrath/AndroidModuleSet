@@ -1,15 +1,13 @@
 package com.joker.main.share.bean;
 import java.util.ArrayList;
 
-public class MultiObjectShareBean{
+public class MultiImageShareBean{
  private String title;
  private String description;
  private ArrayList<String> images;
- private ArrayList<String> videos;
 
- public MultiObjectShareBean(){
+ public MultiImageShareBean(){
   images=new ArrayList<>();
-  videos=new ArrayList<>();
  }
 
  public String getTitle(){
@@ -36,15 +34,4 @@ public class MultiObjectShareBean{
   this.images=images;
  }
 
- public ArrayList<String> getVideos(){
-  return videos;
- }
-
- public void setVideos(ArrayList<String> videos){
-  this.videos=videos;
- }
-
- public void addViedo(String path) {
-
- }
 }
