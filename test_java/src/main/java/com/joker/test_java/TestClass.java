@@ -10,6 +10,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class TestClass{
 
+ private final NewTest test=new NewTest();
+
  private final static String message ="{\n"+
    "    \"resultCode\": \"0000\",\n"+
    "    \"msg\": \"操作成功\",\n"+

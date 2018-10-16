@@ -26,4 +26,5 @@ dependencies {
 	implementation project(':permissions')
 	implementation project(path: ':camera')
 	implementation project(':login')
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

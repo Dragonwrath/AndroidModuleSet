@@ -6,4 +6,6 @@ dependencies {
 	compileOnly rootProject.ext.v7
 	compileOnly rootProject.ext.design
 	compileOnly rootProject.ext.kotlin8
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+

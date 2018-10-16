@@ -15,6 +15,7 @@ dependencies {
 	compileOnly rootProject.ext.constraint
 	compileOnly rootProject.ext.glide4
 	implementation rootProject.ext.kotlin8
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 

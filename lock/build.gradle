@@ -20,4 +20,5 @@ dependencies {
 	implementation rootProject.ext.v7
 	implementation rootProject.ext.constraint
 	implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

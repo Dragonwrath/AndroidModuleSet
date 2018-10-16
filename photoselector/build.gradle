@@ -6,12 +6,12 @@ apply from:file(rootDir.path+"\\default.gradle")
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-	implementation rootProject.ext.v4
-	implementation rootProject.ext.v7
-	implementation rootProject.ext.recyclerView
-	implementation rootProject.ext.constraint
-	implementation rootProject.ext.glide
-	implementation project(':common_utils')
-	implementation project(':permissions')
-	implementation rootProject.ext.kotlin8
+	compileOnly rootProject.ext.v4
+	compileOnly rootProject.ext.v7
+	compileOnly rootProject.ext.recyclerView
+	compileOnly rootProject.ext.constraint
+	compileOnly rootProject.ext.glide
+	compileOnly project(':common_utils')
+	compileOnly project(':permissions')
+	compileOnly rootProject.ext.kotlin8
 }

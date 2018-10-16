@@ -14,6 +14,7 @@ dependencies {
 	implementation rootProject.ext.kotlin8
 	//for test
 	testImplementation 'junit:junit:4.12'
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 sourceCompatibility = "1.8"
