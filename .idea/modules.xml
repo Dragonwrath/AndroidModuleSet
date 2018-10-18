@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/notification/notification.iml" filepath="$PROJECT_DIR$/notification/notification.iml" />
       <module fileurl="file://$PROJECT_DIR$/permissions/permissions.iml" filepath="$PROJECT_DIR$/permissions/permissions.iml" />
       <module fileurl="file://$PROJECT_DIR$/photoselector/photoselector.iml" filepath="$PROJECT_DIR$/photoselector/photoselector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scan/scan.iml" filepath="$PROJECT_DIR$/scan/scan.iml" />
       <module fileurl="file://$PROJECT_DIR$/test_java/test_java.iml" filepath="$PROJECT_DIR$/test_java/test_java.iml" />
       <module fileurl="file://$PROJECT_DIR$/utils_kt/utils_kt.iml" filepath="$PROJECT_DIR$/utils_kt/utils_kt.iml" />
     </modules>

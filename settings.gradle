@@ -1,2 +1,2 @@
-include ':app', ':photoselector', ':common_utils', ':camera', ':test_java',
+include ':app', ':photoselector', ':common_utils', ':camera', ':test_java', ':scan',
 		':permissions', ':login', ':notification', ':lock', ':utils_kt', ':http'

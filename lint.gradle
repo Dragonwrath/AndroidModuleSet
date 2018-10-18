@@ -1,5 +1,5 @@
 android {
 	lintOptions {
-		ignore('SpUsage','HardcodedText',"GoogleAppIndexingWarning")
+		ignore('SpUsage','HardcodedText',"GoogleAppIndexingWarning","ResourceName")
 	}
 }
